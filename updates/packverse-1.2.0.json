@@ -1,0 +1,1202 @@
+{
+  "version": "packverse-1.2.0",
+  "mode": "full-snapshot",
+  "sourceCommit": "2146b8268077d5a4852b7421795d0040cb18db28",
+  "baseUrl": "https://raw.githubusercontent.com/benryaus-cmd/Pack-Opener/2146b8268077d5a4852b7421795d0040cb18db28/",
+  "entry": "src/App.tsx",
+  "gameSlot": "game2",
+  "files": [
+    {
+      "source": "AIPPY-IMPORT.md",
+      "target": "AIPPY-IMPORT.md",
+      "encoding": "utf-8",
+      "bytes": 2113,
+      "sha256": "3e64cb554f86598046bff616637c839eacbcd39394639551dff9339d66da3317"
+    },
+    {
+      "source": "ASSET-CREDITS.md",
+      "target": "ASSET-CREDITS.md",
+      "encoding": "utf-8",
+      "bytes": 2220,
+      "sha256": "96bb593fd774611e8a31efb5fff31517db2ab780e994c9cb7e690d3bdd2384d4"
+    },
+    {
+      "source": "README.md",
+      "target": "README.md",
+      "encoding": "utf-8",
+      "bytes": 4144,
+      "sha256": "9ce5dc510b41089d9a8469d766c0845da6b4c3d5f5bf6b7988505d582d19c1d2"
+    },
+    {
+      "source": "build/aippy-host/App.tsx.txt",
+      "target": "build/aippy-host/App.tsx.txt",
+      "encoding": "utf-8",
+      "bytes": 9258,
+      "sha256": "ab001b76bd2ab5124e77ccf6f134886225d6c831adab29fa91d8c2ffbf762f88"
+    },
+    {
+      "source": "build/aippy-host/packverse-host-patches.ts",
+      "target": "build/aippy-host/packverse-host-patches.ts",
+      "encoding": "utf-8",
+      "bytes": 668,
+      "sha256": "61f3277a72b4f74457302c0662dfcd975880063a02812b117fbe0f9156690c7f"
+    },
+    {
+      "source": "build/aippy-host/vite-plugin-github-import.ts",
+      "target": "build/aippy-host/vite-plugin-github-import.ts",
+      "encoding": "utf-8",
+      "bytes": 17629,
+      "sha256": "84453425470ce9c164ee9dcc4b20dc0b250a0435f999d3b197abeb33cb74148f"
+    },
+    {
+      "source": "build/aippy-host/vite-plugin-packverse-css.ts",
+      "target": "build/aippy-host/vite-plugin-packverse-css.ts",
+      "encoding": "utf-8",
+      "bytes": 6058,
+      "sha256": "382e79383657c1ea2523daeb349e46ece0aca6ec2eca1276ab01ea8fcebf6c28"
+    },
+    {
+      "source": "build/aippy-user-compat.ts",
+      "target": "build/aippy-user-compat.ts",
+      "encoding": "utf-8",
+      "bytes": 824,
+      "sha256": "ca99f72f334e3cbb5f004682dc56a70e88c935591afeb4dc7dfe1e50b8c99038"
+    },
+    {
+      "source": "index.html",
+      "target": "index.html",
+      "encoding": "utf-8",
+      "bytes": 510,
+      "sha256": "936b06c34b52245b50eb4071633c45d957feb0b1506aad69411a2658d220229d"
+    },
+    {
+      "source": "package-lock.json",
+      "target": "package-lock.json",
+      "encoding": "utf-8",
+      "bytes": 77143,
+      "sha256": "24c4a1730fbc235490f12e55355063fcf6dd3ccbe85e795b74617b916b8b452a"
+    },
+    {
+      "source": "package.json",
+      "target": "package.json",
+      "encoding": "utf-8",
+      "bytes": 1273,
+      "sha256": "b20cbba0227de6cb2bf22a347cd83e7a7141a30d84007cb27f17de26ffdc8334"
+    },
+    {
+      "source": "public/cards/base1-1.webp",
+      "target": "public/cards/base1-1.webp",
+      "encoding": "binary",
+      "bytes": 19730,
+      "sha256": "99b3cd5c38e6aaf236ac71a54d6c9180f2b5b4ff6a9dd8f1a5d4c082a0b8e1e1"
+    },
+    {
+      "source": "public/cards/base1-10.webp",
+      "target": "public/cards/base1-10.webp",
+      "encoding": "binary",
+      "bytes": 18182,
+      "sha256": "78ceb295994ffd6c2cd7e5db62ffd84b03372fd12b4903bdddc7e28f70e0b1ce"
+    },
+    {
+      "source": "public/cards/base1-100.webp",
+      "target": "public/cards/base1-100.webp",
+      "encoding": "binary",
+      "bytes": 7124,
+      "sha256": "d260efead53ff2d60dfa257da932e1a7461edbcedd098ce3b74632215ac7c2f8"
+    },
+    {
+      "source": "public/cards/base1-101.webp",
+      "target": "public/cards/base1-101.webp",
+      "encoding": "binary",
+      "bytes": 7830,
+      "sha256": "b6d2b25316d2f63b13dbfe1d22c49240011657c0f56e8cd64861880b4992ab9e"
+    },
+    {
+      "source": "public/cards/base1-102.webp",
+      "target": "public/cards/base1-102.webp",
+      "encoding": "binary",
+      "bytes": 7210,
+      "sha256": "3a4cffc30b25733bf5803a48bb57b341a2f28aa671d367008f8685c81c075101"
+    },
+    {
+      "source": "public/cards/base1-11.webp",
+      "target": "public/cards/base1-11.webp",
+      "encoding": "binary",
+      "bytes": 21572,
+      "sha256": "5aa30e5abc17995d3fb098224e793913713c31ed5c85a102f8c73055abfb3b00"
+    },
+    {
+      "source": "public/cards/base1-12.webp",
+      "target": "public/cards/base1-12.webp",
+      "encoding": "binary",
+      "bytes": 20042,
+      "sha256": "5be941afdc52b0aedd253c40dad3196facf306a5dac4b8ff051673d17b4427c5"
+    },
+    {
+      "source": "public/cards/base1-13.webp",
+      "target": "public/cards/base1-13.webp",
+      "encoding": "binary",
+      "bytes": 20970,
+      "sha256": "7de5f7029d44ec78f622281478f4973e99d3e6c4cf6ce3976197373b865b55c1"
+    },
+    {
+      "source": "public/cards/base1-14.webp",
+      "target": "public/cards/base1-14.webp",
+      "encoding": "binary",
+      "bytes": 21148,
+      "sha256": "242d8d77927c340e3913cb25f44de2d9b992ea06d2db826003a53919342d5457"
+    },
+    {
+      "source": "public/cards/base1-15.webp",
+      "target": "public/cards/base1-15.webp",
+      "encoding": "binary",
+      "bytes": 18934,
+      "sha256": "33aa2a48e90edb74ee20443fb2f71d919909026480f7ae65b8e55faf12db1287"
+    },
+    {
+      "source": "public/cards/base1-16.webp",
+      "target": "public/cards/base1-16.webp",
+      "encoding": "binary",
+      "bytes": 18936,
+      "sha256": "c0770e5e2edd00627db8d32bb535abf01eee77cf46468c793e656d4ba7236c1f"
+    },
+    {
+      "source": "public/cards/base1-17.webp",
+      "target": "public/cards/base1-17.webp",
+      "encoding": "binary",
+      "bytes": 23160,
+      "sha256": "76ea7ef1b8472b3ef0989f8e5baf40e3d4cdd8536d41054ad6c914f4b956bf3c"
+    },
+    {
+      "source": "public/cards/base1-18.webp",
+      "target": "public/cards/base1-18.webp",
+      "encoding": "binary",
+      "bytes": 19606,
+      "sha256": "fdf0b6d64e36ea5696b5f43e5149a6898d98914f8c173db1f92832b8b226c21c"
+    },
+    {
+      "source": "public/cards/base1-19.webp",
+      "target": "public/cards/base1-19.webp",
+      "encoding": "binary",
+      "bytes": 16832,
+      "sha256": "69dd4172c0a24edeefcb50c7a1d8f81944497c7d9482ad1f33ef01ddbd2433f7"
+    },
+    {
+      "source": "public/cards/base1-2.webp",
+      "target": "public/cards/base1-2.webp",
+      "encoding": "binary",
+      "bytes": 24054,
+      "sha256": "7c8f0ca78f8ed45a72455e19527de969fc54337493b898053aabedc40cc50d85"
+    },
+    {
+      "source": "public/cards/base1-20.webp",
+      "target": "public/cards/base1-20.webp",
+      "encoding": "binary",
+      "bytes": 20308,
+      "sha256": "0e2d15ce8b9a4d0e7d9106096907119908399fbaf9102140c02179d80230d296"
+    },
+    {
+      "source": "public/cards/base1-21.webp",
+      "target": "public/cards/base1-21.webp",
+      "encoding": "binary",
+      "bytes": 19986,
+      "sha256": "3ee3308c0cc3b3e5442e74d42e331758495d24c82d58ddf760bb243ab2423838"
+    },
+    {
+      "source": "public/cards/base1-22.webp",
+      "target": "public/cards/base1-22.webp",
+      "encoding": "binary",
+      "bytes": 18478,
+      "sha256": "8cf097fecc19245715d1b15ce404a40c77486a42f86c7b5bad02e2ee2162a61c"
+    },
+    {
+      "source": "public/cards/base1-23.webp",
+      "target": "public/cards/base1-23.webp",
+      "encoding": "binary",
+      "bytes": 20070,
+      "sha256": "bb1a01158fb93180532f17dd39fc66dc25c795841eff173d4b92c1677b3f81d5"
+    },
+    {
+      "source": "public/cards/base1-24.webp",
+      "target": "public/cards/base1-24.webp",
+      "encoding": "binary",
+      "bytes": 18456,
+      "sha256": "4c436ec8fd74e10a94957d2b2b8cc1654a6bfc04960ae9666cfb4a22c3244683"
+    },
+    {
+      "source": "public/cards/base1-25.webp",
+      "target": "public/cards/base1-25.webp",
+      "encoding": "binary",
+      "bytes": 19040,
+      "sha256": "422de5b215f56f6707d239a173bfacb33e54bab96b82301a9bb241e05ec49f92"
+    },
+    {
+      "source": "public/cards/base1-26.webp",
+      "target": "public/cards/base1-26.webp",
+      "encoding": "binary",
+      "bytes": 12462,
+      "sha256": "ce5dac9b28c9200c8e518ebd5035f07fe6eb7cba9c50cae84f113c3c38198961"
+    },
+    {
+      "source": "public/cards/base1-27.webp",
+      "target": "public/cards/base1-27.webp",
+      "encoding": "binary",
+      "bytes": 16878,
+      "sha256": "0e00be2bc0db8689b5cd25b2391631acd370d35b0695a765d946ee9137fceac5"
+    },
+    {
+      "source": "public/cards/base1-28.webp",
+      "target": "public/cards/base1-28.webp",
+      "encoding": "binary",
+      "bytes": 15598,
+      "sha256": "ee729bfb1dcbe9aeae8ec635ea514424315b8498c7d4515703145886813b9412"
+    },
+    {
+      "source": "public/cards/base1-29.webp",
+      "target": "public/cards/base1-29.webp",
+      "encoding": "binary",
+      "bytes": 15458,
+      "sha256": "8abd255f8a32e97d5f56bc7d3b92ad5db1aef47b0266b243fc85e90ea1ba9ab0"
+    },
+    {
+      "source": "public/cards/base1-3.webp",
+      "target": "public/cards/base1-3.webp",
+      "encoding": "binary",
+      "bytes": 17938,
+      "sha256": "77bff14158c5625004b9807c8eb55840f5cdc278d982c172ceb4c0c597e704bb"
+    },
+    {
+      "source": "public/cards/base1-30.webp",
+      "target": "public/cards/base1-30.webp",
+      "encoding": "binary",
+      "bytes": 18764,
+      "sha256": "a44d12f8ef6a6edb16e39324e9fc6104a01dd76bb32c7bcc3bc85f3e409f7674"
+    },
+    {
+      "source": "public/cards/base1-31.webp",
+      "target": "public/cards/base1-31.webp",
+      "encoding": "binary",
+      "bytes": 18520,
+      "sha256": "ae4e486e8f140c3827412b2dcbe30d2fbea47f9a4d999609d8f0b822e8131287"
+    },
+    {
+      "source": "public/cards/base1-32.webp",
+      "target": "public/cards/base1-32.webp",
+      "encoding": "binary",
+      "bytes": 18332,
+      "sha256": "b0f03b3f0d5f303e5e9805bbb12922600dc9fc1c0b4629d83646feb3a82ef04a"
+    },
+    {
+      "source": "public/cards/base1-33.webp",
+      "target": "public/cards/base1-33.webp",
+      "encoding": "binary",
+      "bytes": 19462,
+      "sha256": "3c0e0728a2ce5a110118d92aceca8486ce14a7906395eaddef947365b47548a1"
+    },
+    {
+      "source": "public/cards/base1-34.webp",
+      "target": "public/cards/base1-34.webp",
+      "encoding": "binary",
+      "bytes": 21708,
+      "sha256": "909bc2e30cbeab9922d747aa859039384f590ac8fa3f2af8f12346b0eb605c44"
+    },
+    {
+      "source": "public/cards/base1-35.webp",
+      "target": "public/cards/base1-35.webp",
+      "encoding": "binary",
+      "bytes": 20288,
+      "sha256": "c4c10be5d3fb60603dd5e2df207c81e4c55eb66ef103c92d0d689246a5c628b3"
+    },
+    {
+      "source": "public/cards/base1-36.webp",
+      "target": "public/cards/base1-36.webp",
+      "encoding": "binary",
+      "bytes": 19156,
+      "sha256": "2ade90d22ee8be6fa7c48fa93ae15419b09b2ccef18ef8f519faa12523f8fe85"
+    },
+    {
+      "source": "public/cards/base1-37.webp",
+      "target": "public/cards/base1-37.webp",
+      "encoding": "binary",
+      "bytes": 18966,
+      "sha256": "f75b8e2fa7505476949ff28ea191184fb1160c36b9a0793ab266c256d8d76e97"
+    },
+    {
+      "source": "public/cards/base1-38.webp",
+      "target": "public/cards/base1-38.webp",
+      "encoding": "binary",
+      "bytes": 21978,
+      "sha256": "3ea665bb31f70ee7b83a0f3abd819f35ef07021decf22c0a9d55cab32a825f05"
+    },
+    {
+      "source": "public/cards/base1-39.webp",
+      "target": "public/cards/base1-39.webp",
+      "encoding": "binary",
+      "bytes": 16176,
+      "sha256": "1850df2e17668c5e4b6cf3bc0067bb5b5931c67f1eac0640d9d3919799854c14"
+    },
+    {
+      "source": "public/cards/base1-4.webp",
+      "target": "public/cards/base1-4.webp",
+      "encoding": "binary",
+      "bytes": 20190,
+      "sha256": "f9ab1488b2145f3d055acb7669bb9caf18165dd75c8df19a9e4f55c2a2640c4a"
+    },
+    {
+      "source": "public/cards/base1-40.webp",
+      "target": "public/cards/base1-40.webp",
+      "encoding": "binary",
+      "bytes": 20264,
+      "sha256": "59bba4d3e372dae4b4692b44980bcc7416293eb0abf0741c25ca171c41bd3a16"
+    },
+    {
+      "source": "public/cards/base1-41.webp",
+      "target": "public/cards/base1-41.webp",
+      "encoding": "binary",
+      "bytes": 16150,
+      "sha256": "8ea736dae7c72ae844ad1ca4f1779d860cc33db48194825d2626b4a593bc32c3"
+    },
+    {
+      "source": "public/cards/base1-42.webp",
+      "target": "public/cards/base1-42.webp",
+      "encoding": "binary",
+      "bytes": 20544,
+      "sha256": "ef0c27148784f6e9cc7ca0d32e8f46f5cf882a41b1846f58e3dd8f77d7aa7a3c"
+    },
+    {
+      "source": "public/cards/base1-43.webp",
+      "target": "public/cards/base1-43.webp",
+      "encoding": "binary",
+      "bytes": 15968,
+      "sha256": "fc496feecc5d65d1288d40d5ed90599f4851862fd4db079ac56725b492659d74"
+    },
+    {
+      "source": "public/cards/base1-44.webp",
+      "target": "public/cards/base1-44.webp",
+      "encoding": "binary",
+      "bytes": 18472,
+      "sha256": "21194f22426096c60376cb6dc306716706e686c419f29e1874931ac12ac27914"
+    },
+    {
+      "source": "public/cards/base1-45.webp",
+      "target": "public/cards/base1-45.webp",
+      "encoding": "binary",
+      "bytes": 16794,
+      "sha256": "1853863b9c3c682e5495b4a46bcf2781c4af377b730f6bf3a232fbea75c0fdbd"
+    },
+    {
+      "source": "public/cards/base1-46.webp",
+      "target": "public/cards/base1-46.webp",
+      "encoding": "binary",
+      "bytes": 17776,
+      "sha256": "b1ca203d40359a05d29caa425a53da8acc92a809293775051ee416b5cf5d80a4"
+    },
+    {
+      "source": "public/cards/base1-47.webp",
+      "target": "public/cards/base1-47.webp",
+      "encoding": "binary",
+      "bytes": 15114,
+      "sha256": "3918c6a1f006e92e093b32b418213516924c17614b36ca402b7eed0bf1abad90"
+    },
+    {
+      "source": "public/cards/base1-48.webp",
+      "target": "public/cards/base1-48.webp",
+      "encoding": "binary",
+      "bytes": 14556,
+      "sha256": "4118b22febd32b02f2bc59a3b6d9175d0185f78f09031ac128c2f767112957b5"
+    },
+    {
+      "source": "public/cards/base1-49.webp",
+      "target": "public/cards/base1-49.webp",
+      "encoding": "binary",
+      "bytes": 16712,
+      "sha256": "671b4f43d168cd5f704f8cd18118abd020e31db5cca33b800417ff50bb6a96a1"
+    },
+    {
+      "source": "public/cards/base1-5.webp",
+      "target": "public/cards/base1-5.webp",
+      "encoding": "binary",
+      "bytes": 18772,
+      "sha256": "b314bd2d850173bd3ee7e40ed919c93c73b28cdfadbd0af17302ca7d13002ac9"
+    },
+    {
+      "source": "public/cards/base1-50.webp",
+      "target": "public/cards/base1-50.webp",
+      "encoding": "binary",
+      "bytes": 15742,
+      "sha256": "5ba1014052c6a8c7fa1eb56bba6bf3c2988b595131b72eeab1b76042b263c13b"
+    },
+    {
+      "source": "public/cards/base1-51.webp",
+      "target": "public/cards/base1-51.webp",
+      "encoding": "binary",
+      "bytes": 16414,
+      "sha256": "6694752568158afdf360c9cd55218a512f233c3e0f59514fc1bb2cdc24efaed8"
+    },
+    {
+      "source": "public/cards/base1-52.webp",
+      "target": "public/cards/base1-52.webp",
+      "encoding": "binary",
+      "bytes": 14588,
+      "sha256": "7c4ad1dd87b5d777f8ba66cb3574b2435649d7ed303d283615cf3aee947a4a9c"
+    },
+    {
+      "source": "public/cards/base1-53.webp",
+      "target": "public/cards/base1-53.webp",
+      "encoding": "binary",
+      "bytes": 16726,
+      "sha256": "6bee1e45ca8cba64c9daef26abab0a44900051637cc6287e0845e60b505ac48f"
+    },
+    {
+      "source": "public/cards/base1-54.webp",
+      "target": "public/cards/base1-54.webp",
+      "encoding": "binary",
+      "bytes": 20408,
+      "sha256": "79a410ef3603c88342396186dd7156a0207a1c95431faa6baec53d124cbf0a9e"
+    },
+    {
+      "source": "public/cards/base1-55.webp",
+      "target": "public/cards/base1-55.webp",
+      "encoding": "binary",
+      "bytes": 15492,
+      "sha256": "19ad3e6dc44ba7f63b09675e3e1351d36e81704c52e4ac9513727cb1a2098c30"
+    },
+    {
+      "source": "public/cards/base1-56.webp",
+      "target": "public/cards/base1-56.webp",
+      "encoding": "binary",
+      "bytes": 21124,
+      "sha256": "d61acd34a00cbf7def98810a4375ed820be39a728a681b37e2f7b483dd298ee8"
+    },
+    {
+      "source": "public/cards/base1-57.webp",
+      "target": "public/cards/base1-57.webp",
+      "encoding": "binary",
+      "bytes": 16544,
+      "sha256": "2b6a417805708c12768548ea975c9c7e583ebf46f30a3c4b7aec335c21a38d32"
+    },
+    {
+      "source": "public/cards/base1-58.webp",
+      "target": "public/cards/base1-58.webp",
+      "encoding": "binary",
+      "bytes": 16940,
+      "sha256": "c2bfa554407d98e40bdb23e4ead55237555f43d9c0febb407b72ce6fd5aae366"
+    },
+    {
+      "source": "public/cards/base1-59.webp",
+      "target": "public/cards/base1-59.webp",
+      "encoding": "binary",
+      "bytes": 17828,
+      "sha256": "20d9acfbe58ba037f31c6048a8937bdb7fa178ee138ad1b9964ec63a134be82c"
+    },
+    {
+      "source": "public/cards/base1-6.webp",
+      "target": "public/cards/base1-6.webp",
+      "encoding": "binary",
+      "bytes": 20772,
+      "sha256": "8c16059a61b60a9ee4e0c158e6dd5a89a71b983321743f2911e4535e5aec0652"
+    },
+    {
+      "source": "public/cards/base1-60.webp",
+      "target": "public/cards/base1-60.webp",
+      "encoding": "binary",
+      "bytes": 15518,
+      "sha256": "344106105035083c5597f73967a74a5fa6d7f9f7511114ca062bac49b383e052"
+    },
+    {
+      "source": "public/cards/base1-61.webp",
+      "target": "public/cards/base1-61.webp",
+      "encoding": "binary",
+      "bytes": 14530,
+      "sha256": "2773e4d59037cae01059ecb5996a120501ec5f8493e2fc0f64d0b39b40492619"
+    },
+    {
+      "source": "public/cards/base1-62.webp",
+      "target": "public/cards/base1-62.webp",
+      "encoding": "binary",
+      "bytes": 18532,
+      "sha256": "ce2c6fb10c0f9b2fa8fdf3dddd2ede8dc639f2c6250b6f949c195cd0ac2c238e"
+    },
+    {
+      "source": "public/cards/base1-63.webp",
+      "target": "public/cards/base1-63.webp",
+      "encoding": "binary",
+      "bytes": 19678,
+      "sha256": "d70d89fb0e8e2e0830e68113d1ada28e290a888e98969a7837fdf80705317858"
+    },
+    {
+      "source": "public/cards/base1-64.webp",
+      "target": "public/cards/base1-64.webp",
+      "encoding": "binary",
+      "bytes": 18180,
+      "sha256": "60fe3525b1b91124aa06256810406943d7bc3c091011a056a9b4ba1aa78f0d40"
+    },
+    {
+      "source": "public/cards/base1-65.webp",
+      "target": "public/cards/base1-65.webp",
+      "encoding": "binary",
+      "bytes": 15092,
+      "sha256": "1d988cd73220fad01979141b43caa40826b3872d7c1e521d911694d04dc6f5ff"
+    },
+    {
+      "source": "public/cards/base1-66.webp",
+      "target": "public/cards/base1-66.webp",
+      "encoding": "binary",
+      "bytes": 20924,
+      "sha256": "ba0688f2d720ebf2aef835734a8e5bc780105937fcce47a1213b08bba9885d1f"
+    },
+    {
+      "source": "public/cards/base1-67.webp",
+      "target": "public/cards/base1-67.webp",
+      "encoding": "binary",
+      "bytes": 13760,
+      "sha256": "760236b809509ece1a06ada95e7f6dbd095ac9728ada6d68efcea814383316ef"
+    },
+    {
+      "source": "public/cards/base1-68.webp",
+      "target": "public/cards/base1-68.webp",
+      "encoding": "binary",
+      "bytes": 16262,
+      "sha256": "6a2625ff0009e0f3615be7751bb5150cb7d319421314f1d4cbab71d06ae70e5a"
+    },
+    {
+      "source": "public/cards/base1-69.webp",
+      "target": "public/cards/base1-69.webp",
+      "encoding": "binary",
+      "bytes": 19406,
+      "sha256": "7fefe86bb74e082dd4cb0c52c43193d53b6d03f9496330ce9a5b8edfff715ba6"
+    },
+    {
+      "source": "public/cards/base1-7.webp",
+      "target": "public/cards/base1-7.webp",
+      "encoding": "binary",
+      "bytes": 16272,
+      "sha256": "d52a896bab70d9a0f5f6c9ad00018de616071ce891fe1c8b02a22a0c91544068"
+    },
+    {
+      "source": "public/cards/base1-70.webp",
+      "target": "public/cards/base1-70.webp",
+      "encoding": "binary",
+      "bytes": 16040,
+      "sha256": "ed212508162db8eb39de3cfdd7e941e14060ea14559a79b55fe0587ebe67de06"
+    },
+    {
+      "source": "public/cards/base1-71.webp",
+      "target": "public/cards/base1-71.webp",
+      "encoding": "binary",
+      "bytes": 14422,
+      "sha256": "e4f88fd89c1aab1fd03684d8bb2a2a5a992548fd7fdf1946e3b7f89cbf64504d"
+    },
+    {
+      "source": "public/cards/base1-72.webp",
+      "target": "public/cards/base1-72.webp",
+      "encoding": "binary",
+      "bytes": 13776,
+      "sha256": "4b11043d1ef020e66fc5c8ae7f1281d513c3075ab29442a3071e00b5dd3dea0d"
+    },
+    {
+      "source": "public/cards/base1-73.webp",
+      "target": "public/cards/base1-73.webp",
+      "encoding": "binary",
+      "bytes": 12946,
+      "sha256": "f9a6d2ca652134b814bf73006bb84adb0bb80d7ca895d9736ab207d3cba742a9"
+    },
+    {
+      "source": "public/cards/base1-74.webp",
+      "target": "public/cards/base1-74.webp",
+      "encoding": "binary",
+      "bytes": 11320,
+      "sha256": "a96c5b61ecde5cc591c17dc5b17cc86600ad88dd297cbf2a94998e240da5c074"
+    },
+    {
+      "source": "public/cards/base1-75.webp",
+      "target": "public/cards/base1-75.webp",
+      "encoding": "binary",
+      "bytes": 12704,
+      "sha256": "ae85f063c682d6696a694954d772746a49bb886b2283de02763e1f2fba357152"
+    },
+    {
+      "source": "public/cards/base1-76.webp",
+      "target": "public/cards/base1-76.webp",
+      "encoding": "binary",
+      "bytes": 14526,
+      "sha256": "ad3d2836da7251569e1d279d7ea4635357beb22748fbd862fa7c79180eb5f681"
+    },
+    {
+      "source": "public/cards/base1-77.webp",
+      "target": "public/cards/base1-77.webp",
+      "encoding": "binary",
+      "bytes": 15842,
+      "sha256": "6e9b18bcf53ba0561601b85f9439d84f85c72e98af24a4d1149ac3d34e23be0a"
+    },
+    {
+      "source": "public/cards/base1-78.webp",
+      "target": "public/cards/base1-78.webp",
+      "encoding": "binary",
+      "bytes": 11810,
+      "sha256": "c4282e4980ec793ec1ce592947c11316bd278e8904cedf01bbe964d7951b729a"
+    },
+    {
+      "source": "public/cards/base1-79.webp",
+      "target": "public/cards/base1-79.webp",
+      "encoding": "binary",
+      "bytes": 14952,
+      "sha256": "b4a3776e706e14b5b342862414ce2bc785022ff012c8ed229e4e5d19696b2687"
+    },
+    {
+      "source": "public/cards/base1-8.webp",
+      "target": "public/cards/base1-8.webp",
+      "encoding": "binary",
+      "bytes": 21748,
+      "sha256": "52fd2c148d8f3a40f6ea55c67d1e13893187bd265627b3708755af938849f534"
+    },
+    {
+      "source": "public/cards/base1-80.webp",
+      "target": "public/cards/base1-80.webp",
+      "encoding": "binary",
+      "bytes": 14374,
+      "sha256": "ce7d89691b6f9efd8765c47ae5b4c6c2a6b710a4ccb6f0e1832baeece103eaf2"
+    },
+    {
+      "source": "public/cards/base1-81.webp",
+      "target": "public/cards/base1-81.webp",
+      "encoding": "binary",
+      "bytes": 10574,
+      "sha256": "bf015e41e221c41525532360a902038d80cb4a65434b3fc2f6ba67fbe34b07c8"
+    },
+    {
+      "source": "public/cards/base1-82.webp",
+      "target": "public/cards/base1-82.webp",
+      "encoding": "binary",
+      "bytes": 10048,
+      "sha256": "4d02d95ee15b898b9a7c60b8009b68dbe58930560023781ee505614dbfa4dec7"
+    },
+    {
+      "source": "public/cards/base1-83.webp",
+      "target": "public/cards/base1-83.webp",
+      "encoding": "binary",
+      "bytes": 10592,
+      "sha256": "9be59e3874b7d7fd1b340a2ff8ae5024eced599eb4dcce599a68b971676b72f9"
+    },
+    {
+      "source": "public/cards/base1-84.webp",
+      "target": "public/cards/base1-84.webp",
+      "encoding": "binary",
+      "bytes": 12990,
+      "sha256": "2dacf9b9045b77557dc86f05846906db7968891215a164fbe029845e2e3b2dfb"
+    },
+    {
+      "source": "public/cards/base1-85.webp",
+      "target": "public/cards/base1-85.webp",
+      "encoding": "binary",
+      "bytes": 15348,
+      "sha256": "dd65b4169c13327389b21c5f8f4efd3abcf1c245905519c015d37781527a8d53"
+    },
+    {
+      "source": "public/cards/base1-86.webp",
+      "target": "public/cards/base1-86.webp",
+      "encoding": "binary",
+      "bytes": 13024,
+      "sha256": "9ac6734b8785587fb4aa4a2f14c34a8c1b2612e20752190fba4a5367ba6d348a"
+    },
+    {
+      "source": "public/cards/base1-87.webp",
+      "target": "public/cards/base1-87.webp",
+      "encoding": "binary",
+      "bytes": 12310,
+      "sha256": "6b76bc6778adbcd86e7e4036df2896bf63e3caeda3fd4de094450e54bbb11371"
+    },
+    {
+      "source": "public/cards/base1-88.webp",
+      "target": "public/cards/base1-88.webp",
+      "encoding": "binary",
+      "bytes": 11996,
+      "sha256": "ee8e6d60a2ec032205822e1537d57450703fa4bce4822cb0e1a335d67933d569"
+    },
+    {
+      "source": "public/cards/base1-89.webp",
+      "target": "public/cards/base1-89.webp",
+      "encoding": "binary",
+      "bytes": 13698,
+      "sha256": "e6f9509f89a8b64b89cf63836af68f65767dcda71589de0ffd7f03c9ca3474cd"
+    },
+    {
+      "source": "public/cards/base1-9.webp",
+      "target": "public/cards/base1-9.webp",
+      "encoding": "binary",
+      "bytes": 20208,
+      "sha256": "830a6bf682254aaffb5a7f3f2c8a5588d375c333e77f1f0b144903dd01ed8eb7"
+    },
+    {
+      "source": "public/cards/base1-90.webp",
+      "target": "public/cards/base1-90.webp",
+      "encoding": "binary",
+      "bytes": 11874,
+      "sha256": "15b7bce8842e3fb18da82f7b2612e16d7d09639d3fa00ccd37392d4425ca9f31"
+    },
+    {
+      "source": "public/cards/base1-91.webp",
+      "target": "public/cards/base1-91.webp",
+      "encoding": "binary",
+      "bytes": 12682,
+      "sha256": "9948a8048229aa36f7c2584e65c1df37278f61375ed24957813cd981464e4926"
+    },
+    {
+      "source": "public/cards/base1-92.webp",
+      "target": "public/cards/base1-92.webp",
+      "encoding": "binary",
+      "bytes": 10160,
+      "sha256": "e1c9d213a381402e9402398de6b9ed0c91a199177b082d138d050c40b3db02a6"
+    },
+    {
+      "source": "public/cards/base1-93.webp",
+      "target": "public/cards/base1-93.webp",
+      "encoding": "binary",
+      "bytes": 12028,
+      "sha256": "79e8c2f12fc195f2f127339818a1aa37c433f61c972b6524c8ba8b0167f6ab12"
+    },
+    {
+      "source": "public/cards/base1-94.webp",
+      "target": "public/cards/base1-94.webp",
+      "encoding": "binary",
+      "bytes": 9082,
+      "sha256": "252643e0930dd23755a2c57b3a41a60f41c789e856e392ce5872e36e44fb1ca4"
+    },
+    {
+      "source": "public/cards/base1-95.webp",
+      "target": "public/cards/base1-95.webp",
+      "encoding": "binary",
+      "bytes": 10272,
+      "sha256": "6c9a994d362c57755d9b0d5febe46a78dd9f7bdadc3e605a9f306e7434c1c3fe"
+    },
+    {
+      "source": "public/cards/base1-96.webp",
+      "target": "public/cards/base1-96.webp",
+      "encoding": "binary",
+      "bytes": 10166,
+      "sha256": "52e9c8333f68e6d0b6fee52f18897e4047fab00947d45ead9a559b0a7beed4cd"
+    },
+    {
+      "source": "public/cards/base1-97.webp",
+      "target": "public/cards/base1-97.webp",
+      "encoding": "binary",
+      "bytes": 8686,
+      "sha256": "5d1237f2637b15d38fa7a2741b14a17b4038d3a8b6db6c6abd58c30c487d5181"
+    },
+    {
+      "source": "public/cards/base1-98.webp",
+      "target": "public/cards/base1-98.webp",
+      "encoding": "binary",
+      "bytes": 8650,
+      "sha256": "5bc25fbfb9871cee2ca9abb8b38d4768835ac34e6bbb280c4ff4c2e249baeb87"
+    },
+    {
+      "source": "public/cards/base1-99.webp",
+      "target": "public/cards/base1-99.webp",
+      "encoding": "binary",
+      "bytes": 7756,
+      "sha256": "84072cf5f5aa606f3fb9bccbc9f53c3665dd5f269cf2808b979eca417910d4c0"
+    },
+    {
+      "source": "public/cards/bw1-114.webp",
+      "target": "public/cards/bw1-114.webp",
+      "encoding": "binary",
+      "bytes": 21648,
+      "sha256": "081bcba873143c9eef03235f6d85a269c10a93fd03a06042df1bd597c296f7ad"
+    },
+    {
+      "source": "public/cards/dp1-1.webp",
+      "target": "public/cards/dp1-1.webp",
+      "encoding": "binary",
+      "bytes": 23858,
+      "sha256": "6c1fa127550170ebb53376a8546d3312edcead1ae083a2d39eda4ca85b2309fd"
+    },
+    {
+      "source": "public/cards/ex1-96.webp",
+      "target": "public/cards/ex1-96.webp",
+      "encoding": "binary",
+      "bytes": 19510,
+      "sha256": "a84ef8d5e037ee9c950e7304d5c8f996fe2364385fdb68718289c89b3cb1846b"
+    },
+    {
+      "source": "public/cards/neo1-9.webp",
+      "target": "public/cards/neo1-9.webp",
+      "encoding": "binary",
+      "bytes": 19050,
+      "sha256": "67c7202928b73c13408ba7906c9be071cccf3bb5970303057463f59ac22560e8"
+    },
+    {
+      "source": "public/cards/sm1-149.webp",
+      "target": "public/cards/sm1-149.webp",
+      "encoding": "binary",
+      "bytes": 25490,
+      "sha256": "c8bb579195d636e0faca2b94ab4a4c4bfe9a3e9b742ee290e263d52a511ed336"
+    },
+    {
+      "source": "public/cards/sv01-199.webp",
+      "target": "public/cards/sv01-199.webp",
+      "encoding": "binary",
+      "bytes": 16222,
+      "sha256": "51c5860406948296b21e6503ef39ac1b31bfc135dcd104ae6b15ba1203ce5d41"
+    },
+    {
+      "source": "public/cards/swsh1-138.webp",
+      "target": "public/cards/swsh1-138.webp",
+      "encoding": "binary",
+      "bytes": 24712,
+      "sha256": "498fb8c8fd9d7ba934f73dc4d642e8e777f8bc0261daf802a48583a8ee6ddafa"
+    },
+    {
+      "source": "public/cards/xy1-146.webp",
+      "target": "public/cards/xy1-146.webp",
+      "encoding": "binary",
+      "bytes": 26314,
+      "sha256": "e9f52c3364f7f737f058c415fa0859d6d11d94ea5dfa6fcff6e496698222e008"
+    },
+    {
+      "source": "public/fonts/BARLOW-LICENSE.txt",
+      "target": "public/fonts/BARLOW-LICENSE.txt",
+      "encoding": "utf-8",
+      "bytes": 6167,
+      "sha256": "046ee27d8bddc6b6ee08eee53c96dbf3ec1f6df561644e018507dd8ffcb11d31"
+    },
+    {
+      "source": "public/fonts/DM-SANS-LICENSE.txt",
+      "target": "public/fonts/DM-SANS-LICENSE.txt",
+      "encoding": "utf-8",
+      "bytes": 4502,
+      "sha256": "6fbd040a29c2037a765dfb9f2561e9965b5c95c6dcb5dce516089d63d5f17af7"
+    },
+    {
+      "source": "public/fonts/barlow-condensed-latin-500-normal.woff2",
+      "target": "public/fonts/barlow-condensed-latin-500-normal.woff2",
+      "encoding": "binary",
+      "bytes": 21424,
+      "sha256": "460f141ec8f6c9a1516bfd2bd9fe71656246d7a9d04a0955faf53158d8970c4c"
+    },
+    {
+      "source": "public/fonts/barlow-condensed-latin-600-normal.woff2",
+      "target": "public/fonts/barlow-condensed-latin-600-normal.woff2",
+      "encoding": "binary",
+      "bytes": 22308,
+      "sha256": "215a93c696f442034a46fbb382958f753fda60e30490683aeea6b235fcbb2b66"
+    },
+    {
+      "source": "public/fonts/barlow-condensed-latin-700-normal.woff2",
+      "target": "public/fonts/barlow-condensed-latin-700-normal.woff2",
+      "encoding": "binary",
+      "bytes": 22444,
+      "sha256": "3787a5a419171630e6890cfa47c4da067474d005cd0ff8dc11ec090fdc3ee2b8"
+    },
+    {
+      "source": "public/fonts/barlow-condensed-latin-800-normal.woff2",
+      "target": "public/fonts/barlow-condensed-latin-800-normal.woff2",
+      "encoding": "binary",
+      "bytes": 22464,
+      "sha256": "2515494e8cc2ca07c86ea78766cfa104b796aa6ed5d66821c01d51dbb0b52bce"
+    },
+    {
+      "source": "public/fonts/dm-sans-latin-400-normal.woff2",
+      "target": "public/fonts/dm-sans-latin-400-normal.woff2",
+      "encoding": "binary",
+      "bytes": 14200,
+      "sha256": "4ab51eb2cd7305d177187908d6397474d4520663f6c6e572feb0a64f4fa80006"
+    },
+    {
+      "source": "public/fonts/dm-sans-latin-500-normal.woff2",
+      "target": "public/fonts/dm-sans-latin-500-normal.woff2",
+      "encoding": "binary",
+      "bytes": 14304,
+      "sha256": "19bf1984956517c35c2bd35b6cdedac12a21d6fcd3596c614ecdfb88b648909d"
+    },
+    {
+      "source": "public/fonts/dm-sans-latin-600-normal.woff2",
+      "target": "public/fonts/dm-sans-latin-600-normal.woff2",
+      "encoding": "binary",
+      "bytes": 14144,
+      "sha256": "6bb2b2645ba5eeaecf56322c543fa3a75b87b927977b9c03b1dabc4205089120"
+    },
+    {
+      "source": "public/fonts/dm-sans-latin-700-normal.woff2",
+      "target": "public/fonts/dm-sans-latin-700-normal.woff2",
+      "encoding": "binary",
+      "bytes": 14348,
+      "sha256": "35c5efa0e5daa52ee5c6500f5be354bf751fb65c4e49e1d6806c6eb5883e8fe9"
+    },
+    {
+      "source": "src/App.tsx",
+      "target": "src/App.tsx",
+      "encoding": "utf-8",
+      "bytes": 19865,
+      "sha256": "14822fbf15bfb91a974d58a193fefa2473e7156809a50ef26ca430b952f968cb"
+    },
+    {
+      "source": "src/components/Arcade.tsx",
+      "target": "src/components/Arcade.tsx",
+      "encoding": "utf-8",
+      "bytes": 7531,
+      "sha256": "2bc46ac9121d53ba16ef690572a911514734dd9ab5da162a0d111b5ca9d8c95f"
+    },
+    {
+      "source": "src/components/BoosterPack.tsx",
+      "target": "src/components/BoosterPack.tsx",
+      "encoding": "utf-8",
+      "bytes": 1542,
+      "sha256": "1e7994d1a8947da7f16c2f8cafc496ed640882fabf80a5bb894e237efd0e0be9"
+    },
+    {
+      "source": "src/components/CardView.tsx",
+      "target": "src/components/CardView.tsx",
+      "encoding": "utf-8",
+      "bytes": 5053,
+      "sha256": "f4affcce0002c56fedb8d8ec0395fc16f05d9d629d0febcd127050ea87194747"
+    },
+    {
+      "source": "src/components/Modal.tsx",
+      "target": "src/components/Modal.tsx",
+      "encoding": "utf-8",
+      "bytes": 2215,
+      "sha256": "9706fa6273847d2939381a7c3c304e5982a294486289b7a3a78fb22cf6684831"
+    },
+    {
+      "source": "src/components/Opening.tsx",
+      "target": "src/components/Opening.tsx",
+      "encoding": "utf-8",
+      "bytes": 21757,
+      "sha256": "8f77aab79c253fffee4e197b000b0efa0ab6450c498914e8128ed1e27b0b5b3e"
+    },
+    {
+      "source": "src/components/Overlays.tsx",
+      "target": "src/components/Overlays.tsx",
+      "encoding": "utf-8",
+      "bytes": 22635,
+      "sha256": "1a4e55e91ae722c24d9ec95066d9ebb41af14aec89ec3dd44ae47c4fadbbca44"
+    },
+    {
+      "source": "src/components/Pages.tsx",
+      "target": "src/components/Pages.tsx",
+      "encoding": "utf-8",
+      "bytes": 26271,
+      "sha256": "23923f9359a755f658bfdd68e1a662d55aecaec23058d7f318267d8d522aac57"
+    },
+    {
+      "source": "src/components/Social.tsx",
+      "target": "src/components/Social.tsx",
+      "encoding": "utf-8",
+      "bytes": 19375,
+      "sha256": "d13d95f5528197a7ef8c4c400678b4495cee57fcd6a34e4789c4b27460a4deaa"
+    },
+    {
+      "source": "src/components/Trades.tsx",
+      "target": "src/components/Trades.tsx",
+      "encoding": "utf-8",
+      "bytes": 7639,
+      "sha256": "c4348e7e90a3db5c512638fb5e182bcb5335a9509b2bffa614e91ab1d7f38247"
+    },
+    {
+      "source": "src/game/achievements.ts",
+      "target": "src/game/achievements.ts",
+      "encoding": "utf-8",
+      "bytes": 2377,
+      "sha256": "62fb08d54942b771200c55f627390a24c8703c12b27f04138b8cf91dbed6ce3a"
+    },
+    {
+      "source": "src/game/arcade.ts",
+      "target": "src/game/arcade.ts",
+      "encoding": "utf-8",
+      "bytes": 2156,
+      "sha256": "ec59478011f307098b609c3b9b73d033db1b5b71560b17fa53b5064e95329ef6"
+    },
+    {
+      "source": "src/game/catalogue.json",
+      "target": "src/game/catalogue.json",
+      "encoding": "utf-8",
+      "bytes": 3032777,
+      "sha256": "964968f41f5aeb5152f5a16057eae438bc3c7180001891283e9b3661d00c5c83"
+    },
+    {
+      "source": "src/game/catalogue.ts",
+      "target": "src/game/catalogue.ts",
+      "encoding": "utf-8",
+      "bytes": 1202,
+      "sha256": "9c25b5a084f95b22954fefd989d9f6ef329c24a343b95b8b4dc50e40c459b4ca"
+    },
+    {
+      "source": "src/game/engine.ts",
+      "target": "src/game/engine.ts",
+      "encoding": "utf-8",
+      "bytes": 12159,
+      "sha256": "5c3dbe49ab9dab2cced34e680a292e1004232f24578d189763783c894d496851"
+    },
+    {
+      "source": "src/game/products.ts",
+      "target": "src/game/products.ts",
+      "encoding": "utf-8",
+      "bytes": 2351,
+      "sha256": "03d3bdc59ea18a17e8d62b453e672b158ac085d7e4ebf96249bff26225606639"
+    },
+    {
+      "source": "src/game/trading.ts",
+      "target": "src/game/trading.ts",
+      "encoding": "utf-8",
+      "bytes": 4534,
+      "sha256": "27861213d0dac3697e8f0894327b8f71081c58faf5b4b63df7294c4ca7c52fa3"
+    },
+    {
+      "source": "src/game/types.ts",
+      "target": "src/game/types.ts",
+      "encoding": "utf-8",
+      "bytes": 3059,
+      "sha256": "1d6d83e52a9ab89280e1c0de2560d83e0352c9028162878ce771f0ed966f9a13"
+    },
+    {
+      "source": "src/game/uuid.ts",
+      "target": "src/game/uuid.ts",
+      "encoding": "utf-8",
+      "bytes": 892,
+      "sha256": "2d44c09e62bba9be3805ab009444a8e3d7512ab9c8b5595aae3b03b592300850"
+    },
+    {
+      "source": "src/main.tsx",
+      "target": "src/main.tsx",
+      "encoding": "utf-8",
+      "bytes": 910,
+      "sha256": "0fdc0ef3974ae3a584f130dffc7679f8506720c1559c5f2fb398a5d5c2862d22"
+    },
+    {
+      "source": "src/services/audio.ts",
+      "target": "src/services/audio.ts",
+      "encoding": "utf-8",
+      "bytes": 3663,
+      "sha256": "f4f9ef35435e8d80103bd2187e6a00c253577b1c5f4fc3b3243b61d836f2b73a"
+    },
+    {
+      "source": "src/services/cardAssets.ts",
+      "target": "src/services/cardAssets.ts",
+      "encoding": "utf-8",
+      "bytes": 1329,
+      "sha256": "48b301b3ea56bb84cb67a3c2e35603a326a264378ad2c91b053722e90f35325a"
+    },
+    {
+      "source": "src/services/multiplayer.ts",
+      "target": "src/services/multiplayer.ts",
+      "encoding": "utf-8",
+      "bytes": 19240,
+      "sha256": "0d01ee14763f7c5b4cef960cf9286202a303e7c7f1430888a471767b096352bd"
+    },
+    {
+      "source": "src/services/persistence.ts",
+      "target": "src/services/persistence.ts",
+      "encoding": "utf-8",
+      "bytes": 3737,
+      "sha256": "ac71fc57a92d9337dc2c01357eeea982e4841289ac5112227df238ae573e0c90"
+    },
+    {
+      "source": "src/services/pricing.ts",
+      "target": "src/services/pricing.ts",
+      "encoding": "utf-8",
+      "bytes": 3396,
+      "sha256": "bc39fae10d432133608f5bd6605c2ff55f517cd1bf1019e8f96353eaf7c83d72"
+    },
+    {
+      "source": "src/services/protocol.ts",
+      "target": "src/services/protocol.ts",
+      "encoding": "utf-8",
+      "bytes": 3083,
+      "sha256": "fa6af6d628fa088d3084c0143b057c8a88a55a78f3fa45b4597f0a49ac9cabbf"
+    },
+    {
+      "source": "src/services/trading.ts",
+      "target": "src/services/trading.ts",
+      "encoding": "utf-8",
+      "bytes": 15560,
+      "sha256": "e09290d1a47af03e63b7b70932a084f4ad17a7eefe18fe4b529f4e9a2abeb447"
+    },
+    {
+      "source": "src/services/useGame.ts",
+      "target": "src/services/useGame.ts",
+      "encoding": "utf-8",
+      "bytes": 3050,
+      "sha256": "528d22377ead36a8586ae680ff251e75cbe9e823bb8d2f6de150739baccf1e87"
+    },
+    {
+      "source": "src/styles/app.css",
+      "target": "src/styles/app.css",
+      "encoding": "utf-8",
+      "bytes": 68803,
+      "sha256": "a0c7f70d0713e5855171c3f13c6a7c9f4935dd11101cd05ee15efbef3973c1f5"
+    },
+    {
+      "source": "src/styles/arcade.css",
+      "target": "src/styles/arcade.css",
+      "encoding": "utf-8",
+      "bytes": 3857,
+      "sha256": "a6aa4b59cc165814c3d8200f2ee26e5c0d7565c2cb5134a68e513658b1b9af3a"
+    },
+    {
+      "source": "src/styles/card-experience.css",
+      "target": "src/styles/card-experience.css",
+      "encoding": "utf-8",
+      "bytes": 3623,
+      "sha256": "d57e5b4366dec3a190d8e75e88245bb5563f040a11fa8f01edf8e29c19e0bf48"
+    },
+    {
+      "source": "src/styles/collection-update.css",
+      "target": "src/styles/collection-update.css",
+      "encoding": "utf-8",
+      "bytes": 3601,
+      "sha256": "456864a9188f9e2537122c2eeac510b315a4be1be933c3920c6f43b5ece7e804"
+    },
+    {
+      "source": "src/styles/social-update.css",
+      "target": "src/styles/social-update.css",
+      "encoding": "utf-8",
+      "bytes": 1791,
+      "sha256": "b27df9f0659ff0e23f5b8e7c345cc71a49df7faac540b12ade0f1c03fce5da15"
+    },
+    {
+      "source": "tsconfig.json",
+      "target": "tsconfig.json",
+      "encoding": "utf-8",
+      "bytes": 407,
+      "sha256": "aaf6e7fb0290f50482e48ab4f6653d9ee83b44e951daeb831ad0a901466c7c2a"
+    },
+    {
+      "source": "vite.config.ts",
+      "target": "vite.config.ts",
+      "encoding": "utf-8",
+      "bytes": 310,
+      "sha256": "620cda9858af6de6e43f7a769a8116a10668d92a1aed7a841c0233cc8707c9cf"
+    }
+  ],
+  "hostFiles": [
+    {
+      "source": "build/aippy-host/vite-plugin-github-import.ts",
+      "target": "vite-plugin-github-import.ts",
+      "encoding": "utf-8",
+      "bytes": 17629,
+      "sha256": "84453425470ce9c164ee9dcc4b20dc0b250a0435f999d3b197abeb33cb74148f"
+    },
+    {
+      "source": "build/aippy-host/packverse-host-patches.ts",
+      "target": "packverse-host-patches.ts",
+      "encoding": "utf-8",
+      "bytes": 668,
+      "sha256": "61f3277a72b4f74457302c0662dfcd975880063a02812b117fbe0f9156690c7f"
+    },
+    {
+      "source": "build/aippy-host/vite-plugin-packverse-css.ts",
+      "target": "vite-plugin-packverse-css.ts",
+      "encoding": "utf-8",
+      "bytes": 6058,
+      "sha256": "382e79383657c1ea2523daeb349e46ece0aca6ec2eca1276ab01ea8fcebf6c28"
+    },
+    {
+      "source": "build/aippy-host/App.tsx.txt",
+      "target": "src/App.tsx",
+      "encoding": "utf-8",
+      "bytes": 9258,
+      "sha256": "ab001b76bd2ab5124e77ccf6f134886225d6c831adab29fa91d8c2ffbf762f88"
+    }
+  ]
+}
