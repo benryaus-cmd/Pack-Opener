@@ -6,7 +6,7 @@ https://raw.githubusercontent.com/benryaus-cmd/Pack-Opener/main/updates/packvers
 Expected version: packverse-1.2.0
 Game slot: game2
 
-Read the manifest, then download its four hostFiles using manifest.baseUrl + source and replace their exact host target paths. They update:
+Use Node fetch during build preparation, before loading the Vite configuration, to read the manifest and download its four hostFiles using manifest.baseUrl + source and replace their exact host target paths. They update:
 - vite-plugin-github-import.ts
 - packverse-host-patches.ts
 - vite-plugin-packverse-css.ts
