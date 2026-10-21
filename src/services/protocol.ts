@@ -90,3 +90,16 @@ export function parseHello(v: unknown): Collector | null {
       : [],
   };
 }
+export function recordLimit(schema: unknown, name: string) {
+  if (!schema || typeof schema !== "object") return 512;
+  const doc = schema as any;
+  const record =
+    (Array.isArray(doc.store)
+      ? doc.store.find((item: any) => item && item.name === name)
+      : null) ??
+    doc.schemas?.[name] ??
+    doc[name];
+  const size =
+    record?.maxBytes ?? record?.maxBytesPerRecord ?? record?.maxRecordBytes;
+  return Number.isSafeInteger(size) && size > 0 ? size : 512;
+}

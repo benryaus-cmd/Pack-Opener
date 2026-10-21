@@ -1,3 +1,4 @@
+import { productById, productCost } from "../game/products";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import {
@@ -5,6 +6,9 @@ import {
   Check,
   ChevronRight,
   Layers,
+  Share2,
+  BookOpen,
+  Coins,
   Sparkles,
   X,
 } from "lucide-react";
@@ -16,6 +20,7 @@ import {
   startReveal,
   summaryOpening,
   finishOpening,
+  purchaseAgain,
   tierNames,
 } from "../game/engine";
 import { audio, haptic } from "../services/audio";
@@ -30,7 +35,7 @@ export function Opening({
 }: {
   game: Game;
   settings: Settings;
-  onExit: () => void;
+  onExit: (destination?: "home" | "cards") => void;
   onInspect: (id: string) => void;
 }) {
   const { save, update, busy } = game;
@@ -50,6 +55,40 @@ export function Opening({
   const flip = useRef<HTMLDivElement>(null);
   const announced = useRef(new Set<string>());
   const lastCrinkle = useRef(0);
+  const repeatId = useRef("");
+  const [shareNotice, setShareNotice] = useState("");
+  const repeatProduct = productById(
+    opening.productId === "daily" ? "standard" : opening.productId,
+  )!;
+  const best = cards.reduce((a, b) => (b.tier > a.tier ? b : a), cards[0]);
+  const uniqueOwned = new Set(save!.owned.map((o) => o.cardId));
+  const setProgress = set.cards.filter((c) => uniqueOwned.has(c.id)).length;
+  async function repeat() {
+    repeatId.current ||= crypto.randomUUID().replaceAll("-", "");
+    await update((s) => purchaseAgain(s, set, opening.id, repeatId.current));
+    audio.play("coin");
+  }
+  async function complete(destination: "home" | "cards" = "home") {
+    await update((s) => finishOpening(s, opening.id));
+    onExit(destination);
+  }
+  async function shareBest() {
+    const def = cardById.get(best.cardId)!;
+    const text = `I pulled ${def.name} in PACKVERSE! ${set.name} · ${def.rarity}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "PACKVERSE · " + def.name, text });
+        setShareNotice("Shared your discovery.");
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        setShareNotice("Pull copied to clipboard.");
+      } else setShareNotice("Sharing is unavailable in this browser.");
+    } catch (error) {
+      if ((error as Error).name !== "AbortError")
+        setShareNotice("Sharing is unavailable right now.");
+    }
+  }
+
   useEffect(() => {
     for (const c of cards) {
       const def = cardById.get(c.cardId);
@@ -173,7 +212,7 @@ export function Opening({
         <button
           className="icon-button"
           aria-label="Save and leave opening"
-          onClick={onExit}
+          onClick={() => onExit()}
         >
           <X size={18} />
         </button>
@@ -349,6 +388,15 @@ export function Opening({
               </span>
             </div>
           </div>
+          <div className="summary-set-progress">
+            <span>BEST PULL · {cardById.get(best.cardId)?.name}</span>
+            <small>
+              {setProgress}/{set.total} COLLECTED
+            </small>
+            <div className="progress">
+              <i style={{ width: `${(setProgress / set.total) * 100}%` }} />
+            </div>
+          </div>
           <div className="summary-grid">
             {cards.map((c) => (
               <button
@@ -361,28 +409,64 @@ export function Opening({
                 <small className={`rarity tier-${c.tier}`}>
                   {tierNames[c.tier]}
                 </small>
-                {opening.newIds.includes(c.instanceId) && <b>NEW</b>}
+                {opening.newIds.includes(c.instanceId) ? (
+                  <b>NEW</b>
+                ) : (
+                  <b className="duplicate-marker">DUPLICATE</b>
+                )}
               </button>
             ))}
           </div>
-          <div className="opening-controls">
+          <div className="opening-controls summary-controls">
             <p className="save-notice">
               <Check size={14} /> Every card is saved to your binder.
             </p>
+            {save!.queued.length ? (
+              <button
+                className="primary"
+                disabled={busy}
+                onClick={() =>
+                  void update((s) => finishOpening(s, opening.id)).catch(
+                    () => {},
+                  )
+                }
+              >
+                NEXT BUNDLE PACK <ArrowRight size={17} />
+              </button>
+            ) : (
+              <button
+                className="primary"
+                disabled={busy || save!.coins < productCost(repeatProduct, set)}
+                onClick={() => void repeat().catch(() => {})}
+              >
+                {opening.productId === "daily"
+                  ? "OPEN STANDARD"
+                  : "OPEN ANOTHER"}
+                <span>
+                  <Coins size={14} />
+                  {productCost(repeatProduct, set)}
+                </span>
+              </button>
+            )}
+            <div className="summary-actions">
+              <button
+                className="secondary"
+                disabled={busy}
+                onClick={() => void complete("cards").catch(() => {})}
+              >
+                <BookOpen size={14} /> VIEW CARDS
+              </button>
+              <button className="secondary" onClick={() => void shareBest()}>
+                <Share2 size={14} /> SHARE PULL
+              </button>
+            </div>
+            {shareNotice && <small role="status">{shareNotice}</small>}
             <button
-              className="primary"
-              onClick={() =>
-                void update((s) => finishOpening(s, opening.id))
-                  .then((result) => {
-                    if (!result.pending) onExit();
-                  })
-                  .catch(() => {})
-              }
+              className="text-button"
+              disabled={busy}
+              onClick={() => void complete().catch(() => {})}
             >
-              {save!.queued.length
-                ? "NEXT BUNDLE PACK"
-                : "BACK TO THE UNIVERSE"}{" "}
-              <ArrowRight size={17} />
+              BACK TO THE UNIVERSE <ArrowRight size={14} />
             </button>
           </div>
         </>

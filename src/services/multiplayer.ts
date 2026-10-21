@@ -5,6 +5,7 @@ import {
   profileHeader,
   mergeMessages,
   parseHello,
+  recordLimit,
   type ChatMessage,
   type Collector,
 } from "./protocol.ts";
@@ -420,12 +421,7 @@ export class Multiplayer {
       ...identity,
       profile: { ...profile, avatar: profile.avatar.slice(0, 300) },
     };
-    const schemas = this.state.schema as any;
-    const social = schemas?.schemas?.social ?? schemas?.social;
-    const configured =
-      social?.maxBytes ?? social?.maxBytesPerRecord ?? social?.maxRecordBytes;
-    const budget =
-      Number.isSafeInteger(configured) && configured > 0 ? configured : 512;
+    const budget = recordLimit(this.state.schema, "social");
     if (new TextEncoder().encode(JSON.stringify(body)).length > budget)
       body.profile.avatar = "";
     if (new TextEncoder().encode(JSON.stringify(body)).length > budget) {

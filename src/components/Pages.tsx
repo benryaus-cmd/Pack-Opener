@@ -1,3 +1,4 @@
+import { achievements } from "../game/achievements";
 import {
   products,
   productById,
@@ -168,7 +169,10 @@ export function Home({
           <span>COLLECTOR MISSIONS</span>
           <b>
             {missions(s).filter((m) => m.value >= m.target && !m.claimed)
-              .length || "→"}
+              .length +
+              achievements(s, sets).filter(
+                (a) => a.value >= a.target && !a.claimed,
+              ).length || "→"}
           </b>
         </button>
       </div>

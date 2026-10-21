@@ -1,6 +1,18 @@
-# PACKVERSE 1.0 verification
+# PACKVERSE 1.1 verification
 
 Date: 21 October 2026. Node 24; Chromium 143 headless. Production output compiled with Vite 6.4.4 and TypeScript.
+
+## Version 1.1 update
+
+- `npm test`: **29 passed, 0 failed**. New cases cover unique-card milestone counts, once-only milestone and rare-pull rewards, the real schema's `store` array, and atomic repeat purchases with stale/idempotent action protection.
+- `npm run test:followup`: passed at **280×470, 320×530 and 390×700**. Checks summary action bounds, correct home navigation after leaving a sealed pack, repeat purchase/reload recovery, binder routing and persistent one-time achievement claims.
+- The complete seven-size browser suite and two-context social fixture remain green. The social fixture now uses the live version-3 `store` shape.
+- TypeScript/Vite production build and compiled production smoke test passed. A review finding about passing a mouse event into the new exit destination callback was reproduced by a failing navigation assertion and fixed.
+- Discovery was subsequently reached through the external TinyFish fetch service. It confirms Game 2 direct-v1 identity, 12 global slots, 20480-byte relay messages, 15 events/second, and social records of 5120 bytes. See `LIVE-DISCOVERY-20261021.json` for the exact checked fields and source.
+- Actual live relay exchange remains unverified: the external browser could read JSON but did not expose JavaScript execution for the two-socket probe. The shell's 403 results below remain a historical observation from that access path.
+- Lifecycle tests now mock discovery completely and use loopback-only fixture origins. No placeholder external hosts are contacted.
+
+## Original 1.0 baseline
 
 ## Results
 

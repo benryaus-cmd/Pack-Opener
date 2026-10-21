@@ -378,3 +378,33 @@ export function showcase(save: Save, id: string): Save {
       : [...save.showcase.slice(-2), id],
   };
 }
+
+export function purchaseAgain(
+  save: Save,
+  set: SetDefinition,
+  expectedId: string,
+  tx: string,
+  now = Date.now(),
+  rng = Math.random,
+): Save {
+  if (save.purchaseIds.includes(tx)) return save;
+  const opening = save.pending;
+  if (
+    !opening ||
+    opening.id !== expectedId ||
+    opening.setId !== set.id ||
+    opening.phase !== "summary"
+  )
+    throw Error("Pack changed. Return to the current opening.");
+  if (save.queued.length) return finishOpening(save, expectedId);
+  const productId =
+    opening.productId === "daily" ? "standard" : opening.productId;
+  return purchase(
+    finishOpening(save, expectedId),
+    set,
+    tx,
+    now,
+    rng,
+    productId,
+  );
+}

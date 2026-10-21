@@ -1,0 +1,52 @@
+{
+  "checkedOn": "2026-10-21",
+  "method": "TinyFish external fetch_content, read-only",
+  "host": "https://particular-gasoline-corrected-declared.trycloudflare.com",
+  "config": {
+    "eventsPerSecond": 15,
+    "game": "game2",
+    "maxMessageBytes": 20480,
+    "maxTotalPlayers": 12,
+    "persistent": true,
+    "profileHeader": "X-Player-Profile",
+    "profileMode": "direct-v1",
+    "websocketPath": "/ws/game2/{room}"
+  },
+  "schemaExcerpt": {
+    "version": 3,
+    "profileHeader": "X-Player-Profile",
+    "profileMode": "direct-v1",
+    "generic": "GET/PUT/DELETE /data/{schema}/{id}, GET /data/{schema}",
+    "store": [
+      {
+        "name": "social",
+        "description": "Reactions and small relationship data",
+        "maxBytes": 5120,
+        "maxRecords": 600,
+        "ttlHours": 168,
+        "clientAsserted": true
+      },
+      {
+        "name": "inventory",
+        "description": "Client-claimed collectible data; not a verified economy",
+        "maxBytes": 5120,
+        "maxRecords": 800,
+        "ttlHours": 2160,
+        "clientAsserted": true
+      },
+      {
+        "name": "trading",
+        "description": "Trade offers only; no authoritative item exchange",
+        "maxBytes": 10240,
+        "maxRecords": 240,
+        "ttlHours": 12,
+        "clientAsserted": true
+      }
+    ]
+  },
+  "liveRelayProbe": {
+    "status": "not-performed",
+    "reason": "The external browser read the config but did not expose JavaScript execution for a two-socket probe. Shell live requests remained blocked. No live exchange success is claimed.",
+    "runUrl": "https://agent.tinyfish.ai/runs/717f3861-800c-4ea3-b751-ed6c2770870a"
+  }
+}

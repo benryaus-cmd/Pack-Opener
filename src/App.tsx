@@ -354,9 +354,9 @@ export default function App() {
                     reducedMotion: settings.reducedMotion || systemReduced,
                     graphics: low ? "LOW" : settings.graphics,
                   }}
-                  onExit={() => {
+                  onExit={(destination = "home") => {
                     setOpening(false);
-                    setPage("home");
+                    setPage(destination);
                   }}
                   onInspect={inspectCard}
                 />

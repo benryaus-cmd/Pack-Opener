@@ -36,7 +36,18 @@ const api = http.createServer(async (req, res) => {
     res.end(JSON.stringify(data));
   };
   if (path === "/api/v1/schema") {
-    send({ schemas: { social: { maxBytes: 5120 } } });
+    send({
+      version: 3,
+      store: [
+        {
+          name: "social",
+          maxBytes: 5120,
+          maxRecords: 600,
+          ttlHours: 168,
+          clientAsserted: true,
+        },
+      ],
+    });
     return;
   }
   if (path === "/api/v1/games/game2/config") {
@@ -241,7 +252,10 @@ try {
     multiplayer.send("pull", { id: "integration-pull", cardId: "base1-4" });
   });
   await b.page.getByRole("button", { name: "Lounge", exact: true }).click();
-  await b.page.locator('.activity-item strong').filter({hasText:'Charizard'}).waitFor();
+  await b.page
+    .locator(".activity-item strong")
+    .filter({ hasText: "Charizard" })
+    .waitFor();
   await b.page.screenshot({ path: "test-results/social-two-players.png" });
   assert.deepEqual(errors, []);
   assert(

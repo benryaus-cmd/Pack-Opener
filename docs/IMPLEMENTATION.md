@@ -26,3 +26,11 @@ Review focus: quota errors preserve local progress; no unverified limits assumed
 
 - Final integrated tests also found a rate limiter that discarded a rare-pull event immediately after a hello update. A bounded 10-per-second outbound queue now coalesces profile refreshes and preserves discrete pull events; regression reproduced RED then GREEN.
 - Final suite: 23/23 unit/protocol/lifecycle tests; all seven viewport flows; four additional product cases; two-context social fixture; compiled production smoke test. Full evidence and service limits: `docs/VERIFICATION.md`.
+
+## Version 1.1 continuation
+
+The user's “continue” request extends the published build within the original brief. Added set milestones at 25/50/100 percent (50/100/150 coins), four rare-pull achievements, claim-state persistence in the existing ledger/claims schema, summary progress and duplicate indicators, native sharing/copy fallback, binder routing, and one-transaction repeat purchases. Daily free repeats use the standard product; bundle promotion retains already granted cards.
+
+Actual live discovery was read externally and exposed `store` as an array; the record budget reader now supports that format. The full relay probe was not performed because the remote browser lacked JavaScript execution. No authoritative trade operation appeared in the live schema.
+
+Independent follow-up review found one Important callback regression: a mouse event could be passed as an exit destination. The navigation assertion failed before the fix and passed afterward. No other actionable review findings. Final update checks: 29 unit tests, seven-size browser suite, three-size focused summary/achievement suite, two-player fixture and fresh compiled production smoke. The previous schema/limit uncertainty is narrowed to actual relay exchange and client integration; live discovery fields are now confirmed.

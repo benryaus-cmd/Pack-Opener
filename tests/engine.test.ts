@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   initialSave,
+  purchaseAgain,
   purchase,
   claimDaily,
   claimMission,
@@ -213,4 +214,29 @@ test("bundle openings promote one by one without losing queued ownership", () =>
   assert.notEqual(s.pending?.id, first);
   assert.equal(s.owned.length, 15);
   assert.equal(finishOpening(s, first).queued.length, 1);
+});
+
+test("open another is one transaction and a repeated action never charges twice", () => {
+  let s = purchase(initialSave(now), set, "first", now);
+  s = summaryOpening(s, "first");
+  const next = purchaseAgain(s, set, "first", "again", now, () => 0.5);
+  assert.equal(
+    next.ledger.filter((e) => e.delta < 0).reduce((sum, e) => sum + e.delta, 0),
+    -200,
+  );
+  assert.equal(next.owned.length, 10);
+  assert.equal(next.pending?.id, "again");
+  assert.deepEqual(purchaseAgain(next, set, "first", "again", now), next);
+});
+test("open another rejects a stale summary and insufficient coins without discarding the old summary", () => {
+  const s = summaryOpening(
+    purchase(initialSave(now), set, "first", now),
+    "first",
+  );
+  assert.throws(() => purchaseAgain(s, set, "wrong", "new", now), /changed/);
+  assert.throws(
+    () => purchaseAgain({ ...s, coins: 0 }, set, "first", "new", now),
+    /coins/,
+  );
+  assert.equal(s.pending?.phase, "summary");
 });

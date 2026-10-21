@@ -4,7 +4,7 @@ Use this repository as the source. The entry component is `src/App.tsx` (default
 
 ## Full standalone import
 
-1. Download the complete snapshot listed in `updates/packverse-1.0.0.json`, using its pinned `baseUrl`.
+1. Download the complete snapshot listed in `updates/packverse-1.1.0.json`, using its pinned `baseUrl`.
 2. Preserve `src`, `build`, `public`, package configuration, TypeScript and Vite files. Install dependencies from the lockfile.
 3. Run `npm run build`. Serve `dist/` or let the Aippy preview/build pipeline serve the Vite project.
 4. Keep the `aippyUserCompat()` plugin before React in Vite. It corrects Vite's optimization of the SDK's awaited dynamic-import namespace; it preserves the SDK's existing iframe/native identity handling.
@@ -51,3 +51,9 @@ Test two separate Aippy accounts/devices in the same host and room:
 ## Suggested Aippy build instruction
 
 Import the complete pinned PACKVERSE snapshot from this repository and render its default App using the existing imported-game adapter. Preserve the current host root, identity/runtime integration and staging promotion flow. Copy binary public card/font assets intact, install the listed dependencies and keep the SDK compatibility Vite plugin. Use game2 and the current tunnel in Social settings. Validate both players, chat, rare-pull synchronization, profile publication, rankings and reload recovery on the live service. Keep the real solo opening/collecting/earning loop usable while offline. The Exchange screen accurately reflects the current server's unavailable atomic-transfer capability.
+
+## Version 1.1
+
+The current snapshot adds once-only 25%/50%/100% set milestone rewards, rare-pull achievements, and summary actions for repeat purchases, viewing the binder and sharing the best pull. Saves retain their existing identity, wallet, owned copies and claim history. The client now reads record budgets from the live version-3 `store` array, as well as earlier object-shaped fixtures.
+
+Live discovery was subsequently reached through the TinyFish fetch service and confirmed game2/direct-v1, 12 global connections, 20480-byte relay messages, 15 events per second, and social storage of 5120 bytes per record. A live two-socket probe remains unverified because the remote browser did not expose JavaScript execution and this shell’s requests remain blocked.

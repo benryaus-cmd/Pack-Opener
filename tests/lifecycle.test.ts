@@ -1,6 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { Multiplayer, ApiError } from "../src/services/multiplayer.ts";
+// All lifecycle tests are isolated from the network. Individual cases may
+// replace this in-memory responder and restore it afterward.
+globalThis.fetch = (async () =>
+  new Response(JSON.stringify({ version: 3, store: [] }))) as typeof fetch;
 const deferred = () => {
   let resolve!: (x: any) => void;
   const promise = new Promise<any>((r) => (resolve = r));
@@ -34,7 +38,7 @@ test("old room chat response cannot merge after a new connection", async () => {
     wait = deferred();
   net.request = async () => wait.promise;
   const old = net.history();
-  net.connect("https://new.example", "newroom");
+  net.connect("http://127.0.0.1:18789", "newroom");
   wait.resolve({
     messages: [
       { id: "old", playerId: "a_1", name: "A", text: "Old room", at: 1 },
@@ -53,7 +57,7 @@ test("stale discovery cannot mark another host discovered", async () => {
     new Response(JSON.stringify({ old: true }))) as typeof fetch;
   const old = net.discover();
   net.disconnect();
-  net.host = "https://new.example";
+  net.host = "http://127.0.0.1:18790";
   wait.resolve({ old: true });
   await old;
   assert.equal(net.snapshot().discovered, false);
@@ -130,7 +134,7 @@ test("HTTP 401/507 provide recoverable errors and 429 suppresses immediate retri
 test("relay burst is queued so a profile refresh cannot drop a rare pull", async () => {
   const net = new Multiplayer();
   net.discover = async () => {};
-  net.connect("https://fixture.example");
+  net.connect("http://127.0.0.1:18789");
   const ws = (net as any).socket as Socket;
   net.send("hello", collector());
   net.send("pull", { id: "pull1", cardId: "base1-4" });

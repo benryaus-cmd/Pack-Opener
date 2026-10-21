@@ -3686,3 +3686,115 @@ em {
 .pack-seal {
   transform-origin: 50% 50%;
 }
+.achievement-book {
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.achievement-book > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  min-height: 40px;
+  font-size: 7px;
+  letter-spacing: 0.06em;
+  color: #b8c6db;
+}
+.achievement-book > summary > svg {
+  color: var(--gold);
+}
+.achievement-book > summary > b {
+  margin-left: auto;
+  color: var(--gold);
+  font-size: 9px;
+}
+.achievement-book > summary > small {
+  font-size: 6px;
+  color: #8bacaa;
+}
+.achievement-book > p {
+  font-size: 9px;
+  margin: 8px 0 16px;
+}
+.achievement-row b {
+  font-size: 10px;
+}
+.summary-set-progress {
+  padding: 0 20px 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+  flex-shrink: 0;
+}
+.summary-set-progress > span {
+  font-size: 6px;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.summary-set-progress > small {
+  font-size: 6px;
+  color: #8c9db7;
+}
+.summary-set-progress > .progress {
+  grid-column: 1/-1;
+}
+.summary-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+.summary-actions > .secondary {
+  flex: 1;
+  min-width: 0;
+  font-size: 7px;
+  min-height: 36px;
+}
+.summary-card > b.duplicate-marker {
+  background: #172238e6;
+  color: #9fb3d1;
+  font-size: 5px;
+}
+.summary-controls {
+  padding-top: 7px;
+  padding-bottom: 9px;
+  gap: 5px;
+}
+.summary-controls > .text-button {
+  min-height: 27px;
+  font-size: 7px;
+}
+.summary-controls > .save-notice {
+  margin-bottom: 3px;
+}
+.summary-controls > .primary {
+  min-height: 40px;
+}
+@container (max-height:540px) {
+  .phase-summary .summary-heading {
+    padding-bottom: 8px;
+  }
+  .phase-summary .summary-heading h1 {
+    font-size: 25px;
+  }
+  .summary-set-progress {
+    padding-bottom: 8px;
+  }
+  .summary-controls {
+    gap: 4px;
+    padding-bottom: 5px;
+  }
+  .summary-controls .save-notice {
+    font-size: 7px;
+  }
+  .summary-actions > .secondary {
+    min-height: 32px;
+  }
+  .summary-grid {
+    padding-top: 2px;
+  }
+}

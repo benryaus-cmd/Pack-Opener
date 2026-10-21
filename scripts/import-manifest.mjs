@@ -36,8 +36,12 @@ const files = paths.map((path) => {
     sha256: createHash("sha256").update(content).digest("hex"),
   };
 });
+const packageVersion = JSON.parse(
+  execFileSync("git", ["show", `${sha}:package.json`], { encoding: "utf8" }),
+).version;
+const release = "packverse-" + packageVersion;
 const manifest = {
-  version: "packverse-1.0.0",
+  version: release,
   mode: "full-snapshot",
   sourceCommit: sha,
   baseUrl: `https://raw.githubusercontent.com/benryaus-cmd/Pack-Opener/${sha}/`,
@@ -47,7 +51,7 @@ const manifest = {
 };
 fs.mkdirSync("updates", { recursive: true });
 fs.writeFileSync(
-  "updates/packverse-1.0.0.json",
+  `updates/${release}.json`,
   JSON.stringify(manifest, null, 2) + "\n",
 );
 console.log(

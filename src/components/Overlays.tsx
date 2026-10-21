@@ -1,3 +1,4 @@
+import { achievements, claimAchievement } from "../game/achievements";
 import {
   productById,
   productCost,
@@ -22,7 +23,7 @@ import {
 } from "lucide-react";
 import type { Game } from "../services/useGame";
 import type { Settings, SetDefinition, Save } from "../game/types";
-import { cardById, setById, allCards, imageUrl } from "../game/catalogue";
+import { cardById, setById, allCards, imageUrl, sets } from "../game/catalogue";
 import {
   missions,
   claimMission,
@@ -203,6 +204,7 @@ export function MissionPanel({
   onStudy: () => void;
 }) {
   const s = game.save!;
+  const awards = achievements(s, sets);
   return (
     <>
       <div className="mission-intro">
@@ -260,6 +262,68 @@ export function MissionPanel({
           </article>
         ))}
       </div>
+      <details className="achievement-book">
+        <summary>
+          <Trophy size={18} />
+          <span>COLLECTOR ACHIEVEMENTS</span>
+          <b>
+            {awards.filter((a) => a.claimed).length}/{awards.length}
+          </b>
+          <small>
+            {awards.filter((a) => !a.claimed && a.value >= a.target).length}{" "}
+            READY
+          </small>
+        </summary>
+        <p>
+          Set milestones count unique printed cards. Rare-pull achievements
+          remember your best discovery. Each reward can be claimed once.
+        </p>
+        <div className="mission-list">
+          {awards.map((a) => (
+            <article
+              className={`mission-row achievement-row ${a.claimed ? "claimed" : ""}`}
+              key={a.id}
+            >
+              <div className="mission-icon">
+                <Trophy size={18} />
+              </div>
+              <div>
+                <b>{a.label}</b>
+                <small>
+                  {Math.min(a.value, a.target)} / {a.target} ·{" "}
+                  {a.setId ? "UNIQUE CARDS" : "RARITY TIER"}
+                </small>
+                <div className="progress">
+                  <i
+                    style={{
+                      width: `${Math.min(100, (a.value / a.target) * 100)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+              <button
+                aria-label={`Claim ${a.label}`}
+                disabled={a.claimed || a.value < a.target || game.busy}
+                onClick={() =>
+                  void game
+                    .update((s) => claimAchievement(s, a.id, sets))
+                    .then(() => audio.play("mission"))
+                    .catch(() => {})
+                }
+              >
+                {a.claimed ? (
+                  <Check size={16} />
+                ) : (
+                  <>
+                    <Coins size={13} />
+                    {a.reward}
+                  </>
+                )}
+              </button>
+            </article>
+          ))}
+        </div>
+      </details>
       <div className="study-promo">
         <div>
           <span className="eyebrow">COLLECTOR’S EYE</span>
@@ -555,7 +619,7 @@ export function SettingsPanel({
         EXPORT COLLECTION BACKUP
       </button>
       <p className="fine-print">
-        PACKVERSE 1.0 · {networkStatus}
+        PACKVERSE 1.1 · {networkStatus}
         <br />
         TCGdex data. Pokémon artwork is temporary prototype content.
         <br />
