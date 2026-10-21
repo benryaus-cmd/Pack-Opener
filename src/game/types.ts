@@ -1,3 +1,4 @@
+import type { TradeJournal } from "./trading.ts";
 export interface CardDefinition {
   id: string;
   localId: string;
@@ -82,6 +83,7 @@ export interface MissionProgress {
   period: "daily" | "weekly" | "lifetime";
 }
 export interface Save {
+  trades?: TradeJournal[];
   version: 1;
   revision: number;
   coins: number;

@@ -1,7 +1,8 @@
 # Assets and dependencies
 
-- Card catalogue: [TCGdex cards-database](https://github.com/tcgdex/cards-database) and [TCGdex API](https://tcgdex.dev), snapshot retrieved 21 October 2026. Nine real sets, 1,359 printed definitions. Exact IDs and image bases are retained from API responses; printed rarities are normalized separately for prototype display tiers.
+- Card catalogue: [TCGdex cards-database](https://github.com/tcgdex/cards-database) and [TCGdex API](https://tcgdex.dev), snapshot retrieved 21 October 2026. 124 real expansions, 16,977 printed definitions. Exact IDs and image bases are retained from API responses; printed rarities are normalized separately for prototype display tiers.
 - Temporary Pokémon Trading Card Game images: Pokémon / Nintendo / Creatures / GAME FREAK and respective card artists. Used as explicitly requested prototype content. No commercial artwork rights are claimed. Replace with original licensed content for an original-IP release.
+- Official international Pokémon card reverse: Pokémon TCG API, `https://images.pokemontcg.io/card-back.png`.
 - Cached card images: 102 Base Set cards plus eight featured cards from other eras, obtained from the API-returned TCGdex asset bases.
 - Barlow Condensed: The Barlow Project Authors, SIL Open Font License 1.1. Self-hosted Latin normal weights 500–800, distributed via Fontsource. License: `public/fonts/BARLOW-LICENSE.txt`.
 - DM Sans: DM Sans Project Authors, SIL Open Font License 1.1. Self-hosted Latin normal weights 400–700, distributed via Fontsource. License: `public/fonts/DM-SANS-LICENSE.txt`.

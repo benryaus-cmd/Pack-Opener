@@ -1,3 +1,4 @@
+import { generateId } from "../game/uuid.ts";
 import type { Profile } from "../game/types.ts";
 import {
   DEFAULT_HOST,
@@ -36,6 +37,15 @@ export class Multiplayer {
   private timer: ReturnType<typeof setTimeout> | null = null;
   private heartbeat: ReturnType<typeof setInterval> | null = null;
   private listeners = new Set<() => void>();
+  private eventListeners = new Set<
+    (event: string, data: unknown, from: string) => void
+  >();
+  onEvent(fn: (event: string, data: unknown, from: string) => void) {
+    this.eventListeners.add(fn);
+    return () => {
+      this.eventListeners.delete(fn);
+    };
+  }
   private generation = 0;
   private retries = 0;
   private active = false;
@@ -249,11 +259,10 @@ export class Multiplayer {
       this.clearOutbound();
       this.patch({ status: "offline", peers: {}, population: 0 });
       if (e.code === 1008 || e.code === 4003) {
-        this.active = false;
         this.patch({
-          error: "Room unavailable or server full. Reconnect later.",
+          error: "Server full. Retrying automatically; local play is ready.",
         });
-        return;
+        this.retries = Math.max(4, this.retries);
       }
       this.failed(generation);
     };
@@ -293,6 +302,7 @@ export class Multiplayer {
     });
   }
   send(event: string, data: unknown) {
+    if (event === "pull") void this.publishPull(data);
     if (this.socket?.readyState !== 1) return false;
     const body = JSON.stringify({ type: "event", event, data });
     if (new TextEncoder().encode(body).length > 1800) return false;
@@ -320,6 +330,7 @@ export class Multiplayer {
       });
       if (this.identity) this.send("hello", this.identity);
       void this.history();
+      void this.loadPulls();
       if (this.heartbeat) clearInterval(this.heartbeat);
       this.heartbeat = setInterval(() => {
         if (this.identity) this.send("hello", this.identity);
@@ -327,6 +338,7 @@ export class Multiplayer {
       return;
     }
     if (m.type === "joined") {
+      this.patch({ population: this.state.population + 1 });
       if (this.identity) this.send("hello", this.identity);
       return;
     }
@@ -345,6 +357,7 @@ export class Multiplayer {
       typeof m.from === "string" &&
       m.from !== this.state.connectionId
     ) {
+      this.eventListeners.forEach((fn) => fn(m.event, m.data, m.from));
       if (m.event === "hello" || m.event === "snapshot") {
         const c = parseHello(m.data);
         if (c) {
@@ -366,8 +379,97 @@ export class Multiplayer {
           at: Date.now(),
         };
         if (!this.state.feed.some((x) => x.id === f.id))
-          this.patch({ feed: [f, ...this.state.feed].slice(0, 20) });
+          this.patch({ feed: [f, ...this.state.feed].slice(0, 10) });
       }
+    }
+  }
+  private pullWrites: Promise<void> = Promise.resolve();
+  private async publishPull(value: unknown) {
+    const d = value as { id?: string; cardId?: string };
+    if (
+      !this.identity ||
+      typeof d?.id !== "string" ||
+      typeof d.cardId !== "string"
+    )
+      return;
+    const scope = this.scope(),
+      profile = this.identity.profile;
+    const entry = {
+      id: d.id.slice(0, 60),
+      cardId: d.cardId.slice(0, 50),
+      name: profile.nickName,
+      at: Date.now(),
+    };
+    this.patch({
+      feed: [entry, ...this.state.feed.filter((f) => f.id !== entry.id)].slice(
+        0,
+        10,
+      ),
+    });
+    this.pullWrites = this.pullWrites
+      .catch(() => {})
+      .then(async () => {
+        this.requireCurrent(scope);
+        await this.discover();
+        this.requireCurrent(scope);
+        const id = "pulls_" + profile.playerId;
+        let revision = 0,
+          entries: NetworkState["feed"] = [];
+        try {
+          const r = await this.request("/data/social/" + id);
+          revision = r.record?.revision ?? 0;
+          if (Array.isArray(r.record?.data?.entries))
+            entries = r.record.data.entries;
+        } catch (e) {
+          if (!(e instanceof ApiError) || e.status !== 404) throw e;
+        }
+        entries = [entry, ...entries.filter((e) => e.id !== entry.id)].slice(
+          0,
+          10,
+        );
+        const data = { kind: "pull-feed", entries };
+        const budget = recordLimit(this.state.schema, "social");
+        while (
+          entries.length > 1 &&
+          new TextEncoder().encode(JSON.stringify(data)).length > budget
+        )
+          entries.pop();
+        await this.request("/data/social/" + id, {
+          method: "PUT",
+          body: JSON.stringify({ data, expectedRevision: revision }),
+        });
+      });
+    await this.pullWrites.catch(() => {});
+  }
+  async loadPulls() {
+    try {
+      const r = await this.request("/data/social");
+      const entries = (Array.isArray(r.records) ? r.records : [])
+        .flatMap((r: any) =>
+          r.data?.kind === "pull-feed" && Array.isArray(r.data.entries)
+            ? r.data.entries
+            : r.data?.kind === "pull"
+              ? [r.data]
+              : [],
+        )
+        .filter(
+          (d: any) =>
+            d &&
+            typeof d.id === "string" &&
+            typeof d.cardId === "string" &&
+            typeof d.name === "string" &&
+            Number.isFinite(d.at),
+        );
+      const merged = new Map(
+        [...entries, ...this.state.feed].map((d: any) => [d.id, d]),
+      );
+      this.patch({
+        feed: [...merged.values()]
+          .sort((a: any, b: any) => b.at - a.at)
+          .slice(0, 10) as NetworkState["feed"],
+      });
+    } catch {
+      /* Live relay remains available while public storage recovers. */
     }
   }
   async history() {
@@ -497,7 +599,7 @@ export async function applicationProfile(user: {
   }
   let id = localStorage.getItem("packverse-browser-id");
   if (!id) {
-    id = "b_" + crypto.randomUUID().replaceAll("-", "");
+    id = "b_" + generateId();
     localStorage.setItem("packverse-browser-id", id);
   }
   return {

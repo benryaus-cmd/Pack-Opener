@@ -1,3 +1,4 @@
+import { lockedTradeIds } from "./trading.ts";
 import { productById, productCost, slotPool } from "./products.ts";
 import type {
   Save,
@@ -317,6 +318,7 @@ export function inspect(save: Save, now = Date.now()): Save {
   return s;
 }
 export function recycle(save: Save, ids: string[], now = Date.now()): Save {
+  if (ids.some(id => lockedTradeIds(save).has(id))) throw Error("This card is reserved for a live trade");
   if (!ids.length) throw Error("Choose a duplicate");
   if (new Set(ids).size !== ids.length) throw Error("Duplicate selection");
   const chosen = ids.map((id) => save.owned.find((c) => c.instanceId === id));

@@ -7,17 +7,9 @@ export const setById = new Map(sets.map((s) => [s.id, s]));
 export const totalCards = allCards.length;
 export const heroCard = (s: SetDefinition) =>
   cardById.get(s.hero) ?? s.cards[0];
-const cached = new Set(
-  Object.keys(import.meta.glob("/public/cards/*.webp")).map((p) =>
-    p.split("/").at(-1)!.replace(".webp", ""),
-  ),
-);
+/** Remote catalogue artwork survives full-snapshot imports without bundled public assets. */
 export const imageUrl = (c: CardDefinition, large = false) =>
-  cached.has(c.id)
-    ? `${import.meta.env.BASE_URL}cards/${c.id}.webp`
-    : c.image
-      ? `${c.image}/${large ? "high" : "low"}.webp`
-      : "";
+  c.image ? `${c.image}/${large ? "high" : "low"}.webp` : "";
 /** One set request, cached in IndexedDB by the service worker/browser cache. No per-card grid requests. */
 export async function refreshSet(id: string, signal?: AbortSignal) {
   const response = await fetch(

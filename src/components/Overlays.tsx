@@ -36,7 +36,7 @@ import {
   prototypeWeights,
 } from "../game/engine";
 import { audio, haptic } from "../services/audio";
-import { CardView } from "./CardView";
+import { CardView, CardPrice } from "./CardView";
 export function Inspector({
   id,
   game,
@@ -50,25 +50,59 @@ export function Inspector({
   const own = save.owned.find((c) => c.instanceId === id);
   const card = cardById.get(own?.cardId ?? id);
   const [zoom, setZoom] = useState(false);
-  const [motionEnabled, setMotionEnabled] = useState(false);
+  const [motionEnabled, setMotionEnabled] = useState(true);
+  const [motionError, setMotionError] = useState("");
+  const [sensorGranted, setSensorGranted] = useState(() => {
+    const sensor = window.DeviceOrientationEvent as
+      | (typeof DeviceOrientationEvent & {
+          requestPermission?: () => Promise<string>;
+        })
+      | undefined;
+    return Boolean(sensor && !sensor.requestPermission);
+  });
   const tilt = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!motionEnabled) return;
+    if (!motionEnabled || !sensorGranted) return;
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const el = tilt.current?.querySelector<HTMLElement>(".card-view");
+    if (!el) return;
+    const root = el.closest(".game-root");
+    const reset = () => {
+      for (const [name, value] of [
+        ["--rx", "0deg"],
+        ["--ry", "0deg"],
+        ["--mx", "50%"],
+        ["--my", "50%"],
+      ])
+        el.style.setProperty(name, value);
+    };
     function sensor(e: DeviceOrientationEvent) {
-      const el = tilt.current?.querySelector<HTMLElement>(".card-view");
-      if (!el) return;
-      el.style.setProperty(
-        "--ry",
-        `${Math.max(-12, Math.min(12, (e.gamma ?? 0) / 2))}deg`,
-      );
-      el.style.setProperty(
-        "--rx",
-        `${Math.max(-12, Math.min(12, ((e.beta ?? 45) - 45) / 2))}deg`,
-      );
+      if (query.matches || root?.classList.contains("reduced-motion")) {
+        reset();
+        return;
+      }
+      if (e.gamma === null || e.beta === null) return;
+      const x = Math.max(-1, Math.min(1, e.gamma / 25));
+      const y = Math.max(-1, Math.min(1, (e.beta - 45) / 25));
+      el!.style.setProperty("--ry", `${x * 30}deg`);
+      el!.style.setProperty("--rx", `${-y * 30}deg`);
+      el!.style.setProperty("--mx", `${50 + x * 45}%`);
+      el!.style.setProperty("--my", `${50 + y * 45}%`);
     }
+    const observer = new MutationObserver(() => {
+      if (root?.classList.contains("reduced-motion")) reset();
+    });
+    if (root)
+      observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    query.addEventListener("change", reset);
     window.addEventListener("deviceorientation", sensor);
-    return () => window.removeEventListener("deviceorientation", sensor);
-  }, [motionEnabled]);
+    return () => {
+      observer.disconnect();
+      query.removeEventListener("change", reset);
+      window.removeEventListener("deviceorientation", sensor);
+      reset();
+    };
+  }, [motionEnabled, sensorGranted, id]);
   if (!card) return <p>This card is unavailable.</p>;
   const set = setById.get(card.setId)!;
   const copies = save.owned.filter((c) => c.cardId === card.id);
@@ -109,6 +143,10 @@ export function Inspector({
       <p>
         {set.name} · #{card.localId}/{set.total}
       </p>
+      <CardPrice
+        cardId={card.id}
+        finish={own?.finish ?? (card.holo ? "holo" : "matte")}
+      />
       <div className="inspect-details">
         <span>
           PRINTED RARITY<b>{card.rarity}</b>
@@ -174,18 +212,36 @@ export function Inspector({
         <button
           className="text-button"
           onClick={() => {
+            if (sensorGranted) {
+              setMotionEnabled((v) => !v);
+              return;
+            }
             const sensor = DeviceOrientationEvent as unknown as {
               requestPermission?: () => Promise<string>;
             };
-            void (
-              sensor.requestPermission?.() ?? Promise.resolve("granted")
-            ).then((result) => {
-              if (result === "granted") setMotionEnabled((v) => !v);
-            });
+            void (sensor.requestPermission?.() ?? Promise.resolve("granted"))
+              .then((result) => {
+                if (result === "granted") {
+                  setSensorGranted(true);
+                  setMotionEnabled(true);
+                  setMotionError("");
+                } else
+                  setMotionError(
+                    "Motion permission was not granted. Drag the card to tilt.",
+                  );
+              })
+              .catch(() =>
+                setMotionError("Motion is unavailable. Drag the card to tilt."),
+              );
           }}
         >
-          {motionEnabled ? "DISABLE" : "ENABLE"} MOTION TILT
+          {sensorGranted && motionEnabled ? "DISABLE" : "ENABLE"} MOTION TILT
         </button>
+      )}
+      {motionError && (
+        <p className="fine-print" role="status">
+          {motionError}
+        </p>
       )}
       {canRecycle && (
         <button className="secondary full" onClick={() => onRecycle(id)}>
@@ -329,7 +385,7 @@ export function MissionPanel({
           <span className="eyebrow">COLLECTOR’S EYE</span>
           <h3>A sharp eye pays off.</h3>
           <p>
-            Match three pairs to earn 25 coins.
+            Match six pairs with three lives to earn 25 coins.
             <br />
             Up to 20 rewards a day · 30s rest between wins.
           </p>
@@ -354,15 +410,26 @@ export function Study({ game, onDone }: { game: Game; onDone: () => void }) {
       ? game.save!.owned.map((o) => cardById.get(o.cardId)!).filter(Boolean)
       : allCards.slice(0, 16);
     const unique = [...new Map(pool.map((c) => [c.id, c])).values()];
-    while (unique.length < 3) unique.push(allCards[unique.length]);
-    const picked = unique.slice(-3);
-    return [...picked, ...picked]
-      .map((card, i) => ({ card, key: i }))
-      .sort(() => Math.random() - 0.5);
+    for (const card of allCards) {
+      if (unique.length >= 6) break;
+      if (!unique.some((c) => c.id === card.id)) unique.push(card);
+    }
+    const picked = unique.slice(-6);
+    const shuffled = [...picked, ...picked].map((card, i) => ({
+      card,
+      key: i,
+    }));
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }, []);
   const [selected, setSelected] = useState<number[]>([]);
   const [matched, setMatched] = useState<number[]>([]);
   const [won, setWon] = useState(false);
+  const [lives, setLives] = useState(3);
+  const claimLock = useRef(false);
   const [error, setError] = useState("");
   useEffect(() => {
     if (selected.length !== 2) return;
@@ -372,11 +439,15 @@ export function Study({ game, onDone }: { game: Game; onDone: () => void }) {
       setSelected([]);
       audio.play("new");
     } else {
-      const t = setTimeout(() => setSelected([]), 650);
+      const t = setTimeout(() => {
+        setLives((remaining) => Math.max(0, remaining - 1));
+        setSelected([]);
+      }, 650);
       return () => clearTimeout(t);
     }
   }, [selected, deck]);
-  const complete = matched.length === 6;
+  const complete = matched.length === 12;
+  const lost = lives === 0;
   return (
     <div className="study-game">
       <span className="eyebrow">COLLECTOR’S EYE</span>
@@ -385,14 +456,33 @@ export function Study({ game, onDone }: { game: Game; onDone: () => void }) {
           ? "Sharp eyes. Nice coins."
           : complete
             ? "Beautifully spotted."
-            : "Find the three pairs."}
+            : lost
+              ? "Out of lives. Try again."
+              : "Find the six pairs."}
       </h2>
-      <p>Turn two cards. Remember what you see.</p>
-      <div className="study-grid">
+      <p>Match all six pairs. Each mismatch costs one life.</p>
+      <p
+        role="status"
+        aria-live="polite"
+        aria-label={`${lives} lives remaining`}
+      >
+        {"♥".repeat(lives)}
+        {"♡".repeat(3 - lives)} · {matched.length / 2}/6 PAIRS
+      </p>
+      <div
+        className="study-grid"
+        style={{ gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: "8px" }}
+      >
         {deck.map(({ card }, i) => (
           <button
             key={i}
-            disabled={selected.length === 2 || matched.includes(i) || won}
+            disabled={
+              selected.length === 2 ||
+              selected.includes(i) ||
+              matched.includes(i) ||
+              won ||
+              lost
+            }
             aria-label={`Memory card ${i + 1}`}
             onClick={() => {
               if (!selected.includes(i)) {
@@ -414,15 +504,20 @@ export function Study({ game, onDone }: { game: Game; onDone: () => void }) {
         <button
           className="primary"
           disabled={won || game.busy}
-          onClick={() =>
+          onClick={() => {
+            if (claimLock.current) return;
+            claimLock.current = true;
             void game
               .update((s) => claimStudy(s))
               .then(() => {
                 setWon(true);
                 audio.play("coin");
               })
-              .catch((e) => setError(e.message))
-          }
+              .catch((e) => {
+                claimLock.current = false;
+                setError(e.message);
+              });
+          }}
         >
           {won ? (
             <>
@@ -436,7 +531,7 @@ export function Study({ game, onDone }: { game: Game; onDone: () => void }) {
         </button>
       )}
       <button className="text-button" onClick={onDone}>
-        BACK TO MISSIONS
+        {lost ? "BACK TO ARCADE · TRY A NEW ROUND" : "BACK TO ARCADE"}
       </button>
     </div>
   );
@@ -512,11 +607,13 @@ export function SettingsPanel({
   onChange,
   save,
   networkStatus,
+  onOpenProjectFiles,
 }: {
   settings: Settings;
   onChange: (s: Settings) => void;
   save: Save;
   networkStatus: string;
+  onOpenProjectFiles?: () => void;
 }) {
   const update = (patch: Partial<Settings>) =>
     onChange({ ...settings, ...patch });
@@ -618,6 +715,11 @@ export function SettingsPanel({
       >
         EXPORT COLLECTION BACKUP
       </button>
+      {onOpenProjectFiles && (
+        <button className="secondary full" onClick={onOpenProjectFiles}>
+          temp save
+        </button>
+      )}
       <p className="fine-print">
         PACKVERSE 1.1 · {networkStatus}
         <br />

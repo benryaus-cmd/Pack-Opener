@@ -1,6 +1,8 @@
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { CardDefinition, Finish } from "../game/types";
-import { imageUrl } from "../game/catalogue";
+import { CARD_BACK_URL, cardImageSources } from "../services/cardAssets";
+import { formatCardPrice, useCardPrice } from "../services/pricing";
+import "../styles/card-experience.css";
 import { Sparkles } from "lucide-react";
 export function CardView({
   card,
@@ -20,9 +22,18 @@ export function CardView({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [sourceIndex, setSourceIndex] = useState(0);
   const [failed, setFailed] = useState(false);
+  const [backFailed, setBackFailed] = useState(false);
+  const sources = card ? cardImageSources(card) : [];
   const [loaded, setLoaded] = useState(false);
   const [highLoaded, setHighLoaded] = useState(false);
+  useEffect(() => {
+    setSourceIndex(0);
+    setFailed(false);
+    setLoaded(false);
+    setHighLoaded(false);
+  }, [card?.id]);
   function tilt(e: React.PointerEvent<HTMLDivElement>) {
     if (!interactive || !ref.current) return;
     const r = ref.current.getBoundingClientRect(),
@@ -49,22 +60,36 @@ export function CardView({
       onClick={onClick}
     >
       {back ? (
-        <div className="back-design">
-          <div className="back-orbit" />
-          <Sparkles />
-          <b>PACKVERSE</b>
-          <small>EVERY CARD. A POSSIBILITY.</small>
-        </div>
+        <>
+          {!backFailed && (
+            <img
+              src={CARD_BACK_URL}
+              alt="Pokémon trading card back"
+              draggable={false}
+              onError={() => setBackFailed(true)}
+            />
+          )}
+          <div className="back-design" aria-hidden="true">
+            <div className="back-orbit" />
+            <Sparkles />
+            <b>POKÉMON</b>
+            <small>TRADING CARD GAME</small>
+          </div>
+        </>
       ) : (
         <>
           {card?.image && !failed && (
             <img
-              src={imageUrl(card)}
+              src={sources[sourceIndex]}
               alt={card.name}
               loading={large ? "eager" : "lazy"}
               draggable={false}
               onLoad={() => setLoaded(true)}
-              onError={() => setFailed(true)}
+              onError={() => {
+                if (sourceIndex + 1 < sources.length)
+                  setSourceIndex(sourceIndex + 1);
+                else setFailed(true);
+              }}
             />
           )}
           {large && card?.image && (
@@ -78,7 +103,9 @@ export function CardView({
               onLoad={() => setHighLoaded(true)}
             />
           )}
-          {(!loaded || failed || !card?.image) && (
+          {((!loaded && !highLoaded) ||
+            (failed && !highLoaded) ||
+            !card?.image) && (
             <div className={`card-fallback type-${card?.type.toLowerCase()}`}>
               <small>
                 {card?.localId} / {card?.setId.toUpperCase()}
@@ -98,5 +125,37 @@ export function CardView({
         </>
       )}
     </div>
+  );
+}
+
+/** A marketplace reference for the physical card, never an in-game coin value. */
+export function CardPrice({
+  cardId,
+  finish = "matte",
+}: {
+  cardId: string;
+  finish?: Finish;
+}) {
+  const { price, loading } = useCardPrice(cardId, finish);
+  return (
+    <span
+      className="card-market-price"
+      title={
+        price
+          ? `${price.variant} · ${price.updated ? `Updated ${new Date(price.updated).toLocaleDateString()}` : "Latest available snapshot"}`
+          : undefined
+      }
+    >
+      {loading ? (
+        "Checking market…"
+      ) : price ? (
+        <>
+          <b>{formatCardPrice(price)}</b>{" "}
+          <small>{price.source} · reference</small>
+        </>
+      ) : (
+        "Market price unavailable"
+      )}
+    </span>
   );
 }

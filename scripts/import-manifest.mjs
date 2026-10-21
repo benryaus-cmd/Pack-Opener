@@ -48,6 +48,22 @@ const manifest = {
   entry: "src/App.tsx",
   gameSlot: "game2",
   files,
+  hostFiles: [
+    [
+      "build/aippy-host/vite-plugin-github-import.ts",
+      "vite-plugin-github-import.ts",
+    ],
+    ["build/aippy-host/packverse-host-patches.ts", "packverse-host-patches.ts"],
+    [
+      "build/aippy-host/vite-plugin-packverse-css.ts",
+      "vite-plugin-packverse-css.ts",
+    ],
+    ["build/aippy-host/App.tsx.txt", "src/App.tsx"],
+  ].map(([source, target]) => ({
+    ...files.find((f) => f.source === source),
+    source,
+    target,
+  })),
 };
 fs.mkdirSync("updates", { recursive: true });
 fs.writeFileSync(

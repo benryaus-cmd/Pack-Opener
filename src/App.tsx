@@ -26,6 +26,10 @@ import {
   Zap,
 } from "lucide-react";
 import { useGame } from "./services/useGame";
+import { generateId } from "./game/uuid";
+import { useTrading } from "./services/trading";
+import { Arcade } from "./components/Arcade";
+import { Trades } from "./components/Trades";
 import { sets, cardById, setById, totalCards } from "./game/catalogue";
 import type { SetDefinition, Settings, Save } from "./game/types";
 import {
@@ -50,9 +54,13 @@ import {
   SettingsPanel,
 } from "./components/Overlays";
 type Page = "home" | "shop" | "rip" | "cards" | "social";
-type Overlay = "missions" | "settings" | "study" | null;
-export default function App() {
+type Overlay =
+  "missions" | "settings" | "study" | "arcade" | "chat" | "trades" | null;
+export default function App({
+  onOpenProjectFiles,
+}: { onOpenProjectFiles?: () => void } = {}) {
   const game = useGame();
+  const trade = useTrading(game);
   const [page, setPage] = useState<Page>("home");
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const [overlay, setOverlay] = useState<Overlay>(null);
@@ -149,14 +157,7 @@ export default function App() {
     }
     try {
       const result = await game.update((s) =>
-        purchase(
-          s,
-          set,
-          crypto.randomUUID().replaceAll("-", ""),
-          Date.now(),
-          Math.random,
-          productId,
-        ),
+        purchase(s, set, generateId(), Date.now(), Math.random, productId),
       );
       if (result.pending) {
         audio.play("coin");
@@ -270,12 +271,16 @@ export default function App() {
                 </div>
                 <button
                   className="profile-status"
-                  onClick={() => navigate("social")}
+                  onClick={() => setOverlay("chat")}
                 >
                   <i
                     className={`status-dot ${network.status === "online" ? "online" : ""}`}
                   />
-                  {network.status === "online" ? "LIVE" : "SOLO"}
+                  {network.status === "online"
+                    ? `LIVE · ${Object.keys(network.peers).length + 1}`
+                    : network.status === "retrying"
+                      ? "RETRYING"
+                      : "CONNECTING"}
                 </button>
               </div>
               <main ref={scroll} className="page-scroll">
@@ -292,6 +297,7 @@ export default function App() {
                         game={ready}
                         onBuy={(s) => void buy(s)}
                         onMissions={() => setOverlay("missions")}
+                        onEarn={() => setOverlay("arcade")}
                         onCards={() => navigate("cards")}
                       />
                     )}
@@ -336,6 +342,29 @@ export default function App() {
                   </button>
                 ))}
               </nav>
+              {!opening && page !== "social" && !overlay && (
+                <button
+                  className="chat-shortcut"
+                  onClick={() => setOverlay("chat")}
+                >
+                  CHAT · {Object.keys(network.peers).length + 1}
+                </button>
+              )}
+              {trade.session &&
+                !["completed", "cancelled"].includes(trade.session.status) &&
+                overlay !== "trades" &&
+                page !== "social" && (
+                  <button
+                    className="trade-toast"
+                    onClick={() => setOverlay("trades")}
+                  >
+                    🎴 Live trade{" "}
+                    {trade.session.status === "settling"
+                      ? "· confirmation saved"
+                      : "offer"}{" "}
+                    — OPEN →
+                  </button>
+                )}
               {game.save!.pending && !opening && (
                 <button
                   className="pending-pack"
@@ -366,20 +395,36 @@ export default function App() {
                   <Modal
                     key={overlay}
                     title={
-                      overlay === "settings"
-                        ? "Your preferences"
-                        : overlay === "study"
-                          ? "Collector’s eye"
-                          : "Collector missions"
+                      overlay === "chat"
+                        ? "Room chat"
+                        : overlay === "trades"
+                          ? "Live trade"
+                          : overlay === "arcade"
+                            ? "Earn Coins"
+                            : overlay === "settings"
+                              ? "Your preferences"
+                              : overlay === "study"
+                                ? "Collector’s eye"
+                                : "Collector missions"
                     }
                     onClose={closeOverlay}
                   >
-                    {overlay === "settings" ? (
+                    {overlay === "chat" ? (
+                      <Social game={ready} onInspect={inspectCard} />
+                    ) : overlay === "trades" ? (
+                      <Trades game={ready} />
+                    ) : overlay === "arcade" ? (
+                      <Arcade
+                        game={ready}
+                        onStudy={() => setOverlay("study")}
+                      />
+                    ) : overlay === "settings" ? (
                       <SettingsPanel
                         settings={settings}
                         onChange={changedSettings}
                         save={game.save!}
                         networkStatus={network.status}
+                        onOpenProjectFiles={onOpenProjectFiles}
                       />
                     ) : overlay === "study" ? (
                       <Study

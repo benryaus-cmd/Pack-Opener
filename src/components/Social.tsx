@@ -25,18 +25,22 @@ import { DEFAULT_HOST } from "../services/protocol";
 import { cardById } from "../game/catalogue";
 import { level } from "../game/engine";
 import { CardView } from "./CardView";
+import { Trades } from "./Trades";
+import { trading } from "../services/trading";
 export function Social({
   game,
   onInspect,
+  initialTab = "lounge",
 }: {
   game: Game;
+  initialTab?: string;
   onInspect: (id: string) => void;
 }) {
   const network = useSyncExternalStore(
     multiplayer.subscribe,
     multiplayer.snapshot,
   );
-  const [tab, setTab] = useState("lounge");
+  const [tab, setTab] = useState(initialTab);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -111,11 +115,6 @@ export function Social({
   }
   return (
     <div className="page social-page">
-      <div className="page-heading">
-        <span className="eyebrow">BETTER WHEN SHARED</span>
-        <h1>The collectors’ lounge.</h1>
-        <p>A good pull deserves an audience.</p>
-      </div>
       <div className="connection-card">
         <div className="connection-copy">
           <span className={`connection-light ${online ? "on" : ""}`} />
@@ -136,17 +135,6 @@ export function Social({
             </small>
           </div>
         </div>
-        <button
-          className={online ? "secondary" : "primary"}
-          onClick={() =>
-            online || network.status === "retrying"
-              ? multiplayer.disconnect()
-              : connect()
-          }
-        >
-          {online ? "LEAVE" : network.status === "retrying" ? "CANCEL" : "JOIN"}{" "}
-          <Globe size={14} />
-        </button>
       </div>
       <button
         className="server-edit text-button"
@@ -193,7 +181,7 @@ export function Social({
           ["lounge", "Lounge"],
           ["collectors", "Collectors"],
           ["ranks", "Rankings"],
-          ["exchange", "Exchange"],
+          ["exchange", "Trades"],
         ].map(([id, label]) => (
           <button
             key={id}
@@ -249,7 +237,7 @@ export function Social({
                 <span>
                   {online
                     ? "Rare pulls in this room appear here."
-                    : "Join a lounge to share the moment."}
+                    : "Rare pulls appear automatically when connected."}
                 </span>
               </p>
             </div>
@@ -307,7 +295,7 @@ export function Social({
           >
             <input
               aria-label="Chat message"
-              placeholder={online ? "Share the excitement…" : "Join to chat"}
+              placeholder={online ? "Share the excitement…" : "Reconnecting…"}
               maxLength={280}
               value={text}
               disabled={!online}
@@ -526,51 +514,7 @@ export function Social({
           </p>
         </>
       )}
-      {tab === "exchange" && (
-        <div className="exchange">
-          <div className="exchange-symbol">
-            <Lock size={30} />
-          </div>
-          <span className="eyebrow">THE NEXT CHAPTER</span>
-          <h2>A fair exchange.</h2>
-          <p>Your cards deserve a safe way to change hands.</p>
-          <div className="exchange-panes">
-            <div>
-              <Users size={24} />
-              <b>DIRECT TRADES</b>
-              <span>
-                Two collectors.
-                <br />
-                Two confirmed offers.
-              </span>
-            </div>
-            <div>
-              <CoinsIcon />
-              <b>MARKETPLACE</b>
-              <span>
-                List, discover,
-                <br />
-                and collect.
-              </span>
-            </div>
-          </div>
-          <div className="notice">
-            <ShieldCheck size={24} />
-            <p>
-              Transfers are unavailable on this relay. Its storage can save
-              offers, but cannot atomically move cards and coins between two
-              players. Trading and purchases unlock when a transaction-capable
-              backend is connected.
-            </p>
-          </div>
-          <button
-            className="secondary full"
-            onClick={() => setTab("collectors")}
-          >
-            EXPLORE COLLECTOR SHOWCASES <ArrowRight size={16} />
-          </button>
-        </div>
-      )}
+      {tab === "exchange" && <Trades game={game} />}
       {selected && (
         <div className="profile-drawer">
           <div className="profile-drawer-header">
@@ -599,6 +543,25 @@ export function Social({
               <span>DISCOVERIES</span>
             </div>
           </div>
+          {selected.profile.playerId !== profile.playerId &&
+            peers.some(
+              (c) => c.profile.playerId === selected.profile.playerId,
+            ) && (
+              <button
+                className="primary full"
+                onClick={() => {
+                  try {
+                    trading.invite(selected.profile.playerId);
+                    setSelected(null);
+                    setTab("exchange");
+                  } catch (e) {
+                    setError((e as Error).message);
+                  }
+                }}
+              >
+                OFFER TRADE
+              </button>
+            )}
           <div className="profile-showcase">
             {selected.showcase.map((id, i) => (
               <button key={id + i} onClick={() => onInspect(id)}>

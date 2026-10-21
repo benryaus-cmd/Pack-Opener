@@ -1,6 +1,6 @@
 {
   "name": "packverse",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,7 +14,8 @@
     "test:social": "node tests/social.mjs",
     "format": "prettier --write src tests build scripts *.ts *.html *.json docs/*.md",
     "test:production": "node tests/production.mjs",
-    "test:followup": "node tests/followup.mjs"
+    "test:followup": "node tests/followup.mjs",
+    "test:qol": "node tests/qol.mjs"
   },
   "dependencies": {
     "@aippy/runtime": "^0.4.1",

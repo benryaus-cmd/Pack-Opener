@@ -1,3 +1,4 @@
+import { generateId } from "../game/uuid";
 import { productById, productCost } from "../game/products";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -14,7 +15,7 @@ import {
 } from "lucide-react";
 import type { Game } from "../services/useGame";
 import type { Settings } from "../game/types";
-import { setById, cardById, imageUrl } from "../game/catalogue";
+import { setById, cardById } from "../game/catalogue";
 import {
   advanceOpening,
   startReveal,
@@ -25,7 +26,9 @@ import {
 } from "../game/engine";
 import { audio, haptic } from "../services/audio";
 import { multiplayer } from "../services/multiplayer";
-import { CardView } from "./CardView";
+import { preloadCard } from "../services/cardAssets";
+import { formatCardPrice, useCardPrice } from "../services/pricing";
+import { CardView, CardPrice } from "./CardView";
 import { BoosterPack } from "./BoosterPack";
 export function Opening({
   game,
@@ -39,6 +42,9 @@ export function Opening({
   onInspect: (id: string) => void;
 }) {
   const { save, update, busy } = game;
+  const reduceMotion =
+    settings.reducedMotion ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const opening = save!.pending!;
   const set = setById.get(opening.setId)!;
   const cards = opening.instances.map((id) =>
@@ -57,6 +63,19 @@ export function Opening({
   const lastCrinkle = useRef(0);
   const repeatId = useRef("");
   const [shareNotice, setShareNotice] = useState("");
+  const [gestureNotice, setGestureNotice] = useState("");
+  const [artLoading, setArtLoading] = useState(false);
+  const [deckReady, setDeckReady] = useState(opening.phase !== "reveal");
+  const actionLock = useRef(false);
+  const swipe = useRef<{ x: number; y: number } | null>(null);
+  const suppressClick = useRef(false);
+  const { price } = useCardPrice(card?.id, own?.finish);
+  const spectacular = Boolean(
+    own &&
+    (own.tier >= 3 ||
+      ["holo", "textured", "rainbow", "gold"].includes(own.finish) ||
+      (price?.amount ?? 0) >= 50),
+  );
   const repeatProduct = productById(
     opening.productId === "daily" ? "standard" : opening.productId,
   )!;
@@ -64,7 +83,7 @@ export function Opening({
   const uniqueOwned = new Set(save!.owned.map((o) => o.cardId));
   const setProgress = set.cards.filter((c) => uniqueOwned.has(c.id)).length;
   async function repeat() {
-    repeatId.current ||= crypto.randomUUID().replaceAll("-", "");
+    repeatId.current ||= generateId();
     await update((s) => purchaseAgain(s, set, opening.id, repeatId.current));
     audio.play("coin");
   }
@@ -92,12 +111,52 @@ export function Opening({
   useEffect(() => {
     for (const c of cards) {
       const def = cardById.get(c.cardId);
-      if (def?.image) {
-        const img = new Image();
-        img.src = imageUrl(def, true);
-      }
+      if (def) void preloadCard(def);
     }
   }, [opening.id]);
+  useEffect(() => {
+    if (opening.phase !== "reveal" || !stage.current) return;
+    setDeckReady(false);
+    const ctx = gsap.context(() => {
+      gsap
+        .timeline({ onComplete: () => setDeckReady(true) })
+        .fromTo(
+          ".stack-layer",
+          { y: 150, opacity: 0, rotation: -24, scale: 0.75 },
+          {
+            y: 0,
+            opacity: 0.9,
+            rotation: 0,
+            scale: 1,
+            stagger: 0.12,
+            duration: reduceMotion ? 0 : 0.55,
+            ease: "power3.out",
+          },
+        )
+        .fromTo(
+          ".revealed-card",
+          { y: 170, rotation: 13, scale: 0.8, opacity: 0 },
+          {
+            y: 0,
+            rotation: 0,
+            scale: 1,
+            opacity: 1,
+            duration: reduceMotion ? 0 : 0.65,
+            ease: "back.out(1.3)",
+          },
+          reduceMotion ? 0 : "<.12",
+        );
+    }, stage);
+    return () => ctx.revert();
+  }, [opening.id, opening.phase, reduceMotion]);
+  useEffect(() => {
+    if (!gestureNotice) return;
+    const timer = window.setTimeout(() => setGestureNotice(""), 3500);
+    return () => window.clearTimeout(timer);
+  }, [gestureNotice]);
+  useEffect(() => {
+    if (flipped && spectacular) setParticles(true);
+  }, [flipped, spectacular]);
   useEffect(() => {
     setFlipped(false);
     setParticles(false);
@@ -111,21 +170,21 @@ export function Opening({
         {
           rotateY: 0,
           scale: 1,
-          duration: settings.reducedMotion ? 0 : 0.48,
+          duration: reduceMotion ? 0 : 0.48,
           ease: "back.out(1.4)",
         },
       );
-      if (own?.tier >= 3) {
+      if (spectacular) {
         gsap.fromTo(
           ".reveal-halo",
           { opacity: 0, scale: 0.5 },
-          { opacity: 1, scale: 1, duration: 0.65 },
+          { opacity: 1, scale: 1, duration: reduceMotion ? 0 : 0.65 },
         );
         setParticles(true);
       }
     }, stage);
     return () => ctx.revert();
-  }, [flipped, opening.cursor, settings.reducedMotion]);
+  }, [flipped, opening.cursor, reduceMotion]);
   useEffect(() => {
     if (!tearing || !stage.current) return;
     const ctx = gsap.context(() => {
@@ -141,7 +200,7 @@ export function Opening({
         y: -80,
         rotation: 25,
         opacity: 0,
-        duration: settings.reducedMotion ? 0 : 0.36,
+        duration: reduceMotion ? 0 : 0.36,
       })
         .to(
           ".booster",
@@ -149,14 +208,14 @@ export function Opening({
             y: 180,
             scale: 0.84,
             opacity: 0,
-            duration: settings.reducedMotion ? 0 : 0.42,
+            duration: reduceMotion ? 0 : 0.42,
           },
           "<.16",
         )
         .fromTo(
           ".opening-flash",
           { opacity: 0.85 },
-          { opacity: 0, duration: 0.5 },
+          { opacity: 0, duration: reduceMotion ? 0 : 0.5 },
           "<",
         );
     }, stage);
@@ -171,35 +230,78 @@ export function Opening({
     setTearing(true);
   }
   async function next() {
-    if (busy) return;
-    if (!flipped) {
-      setFlipped(true);
-      audio.play(
-        own.tier >= 5
-          ? "epic"
-          : own.tier >= 3
-            ? "rare"
-            : opening.newIds.includes(own.instanceId)
-              ? "new"
-              : "duplicate",
-      );
-      haptic(own.tier >= 3 ? [25, 20, 50] : 12, settings.haptics);
-      if (own.tier >= 3 && !announced.current.has(own.instanceId)) {
-        announced.current.add(own.instanceId);
-        multiplayer.send("pull", { id: own.instanceId, cardId: own.cardId });
+    if (busy || actionLock.current || !deckReady) return;
+    actionLock.current = true;
+    try {
+      if (!flipped) {
+        setArtLoading(true);
+        if (card) await preloadCard(card);
+        setArtLoading(false);
+        setFlipped(true);
+        audio.play(
+          own.tier >= 5
+            ? "epic"
+            : own.tier >= 3
+              ? "rare"
+              : opening.newIds.includes(own.instanceId)
+                ? "new"
+                : "duplicate",
+        );
+        haptic(own.tier >= 3 ? [25, 20, 50] : 12, settings.haptics);
+        if (own.tier >= 3 && !announced.current.has(own.instanceId)) {
+          announced.current.add(own.instanceId);
+          multiplayer.send("pull", { id: own.instanceId, cardId: own.cardId });
+        }
+      } else {
+        audio.play("slide");
+        await update((s) =>
+          s.pending?.id === opening.id
+            ? advanceOpening(s, opening.id, opening.cursor)
+            : s,
+        );
       }
-    } else {
-      audio.play("slide");
-      await update((s) =>
-        s.pending?.id === opening.id
-          ? advanceOpening(s, opening.id, opening.cursor)
-          : s,
+    } finally {
+      actionLock.current = false;
+      setArtLoading(false);
+    }
+  }
+  async function addToShowcase() {
+    if (!flipped || busy || actionLock.current) return;
+    actionLock.current = true;
+    const id = own.instanceId;
+    const expectedOpening = opening.id;
+    const cursor = opening.cursor;
+    try {
+      const result = await update((s) => {
+        if (
+          s.pending?.id !== expectedOpening ||
+          s.pending.cursor !== cursor ||
+          s.pending.instances[cursor] !== id ||
+          !s.owned.some((o) => o.instanceId === id)
+        )
+          return s;
+        return {
+          ...s,
+          showcase: s.showcase.includes(id)
+            ? s.showcase
+            : [...s.showcase.slice(-2), id],
+        };
+      });
+      setGestureNotice(
+        result.showcase.includes(id)
+          ? `${card?.name ?? "Card"} added to your showcase`
+          : "Card changed. Try again on the current card.",
       );
+      haptic([12, 15, 25], settings.haptics);
+    } catch {
+      setGestureNotice("Could not save showcase. Try again.");
+    } finally {
+      actionLock.current = false;
     }
   }
   return (
     <div
-      className={`opening immersive phase-${opening.phase} tier-${own?.tier ?? 2}`}
+      className={`opening immersive phase-${opening.phase} tier-${own?.tier ?? 2} ${spectacular && flipped ? "spectacular-pull" : ""} ${reduceMotion ? "motion-reduced" : ""}`}
       ref={stage}
     >
       <div className="opening-top">
@@ -305,7 +407,32 @@ export function Opening({
               ))}
             </div>
           </div>
-          <div className="reveal-stage">
+          <div
+            className="reveal-stage"
+            onPointerDown={(e) => {
+              swipe.current = { x: e.clientX, y: e.clientY };
+              suppressClick.current = false;
+            }}
+            onPointerUp={(e) => {
+              const start = swipe.current;
+              swipe.current = null;
+              if (!start) return;
+              const dx = e.clientX - start.x,
+                dy = e.clientY - start.y;
+              if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.3)
+                return;
+              suppressClick.current = true;
+              if (dx < 0) void next().catch(() => {});
+              else if (flipped) void addToShowcase();
+              else
+                setGestureNotice(
+                  "Reveal your card first, then swipe right to showcase",
+                );
+            }}
+            onPointerCancel={() => {
+              swipe.current = null;
+            }}
+          >
             <div className="reveal-halo" />
             {[2, 1].map((i) => (
               <div className={`stack-layer layer-${i}`} key={i}>
@@ -317,12 +444,18 @@ export function Opening({
                 card={card}
                 finish={own.finish}
                 back={!flipped}
-                interactive={flipped && !settings.reducedMotion}
+                interactive={flipped && !reduceMotion}
                 large
-                onClick={() => void next().catch(() => {})}
+                onClick={() => {
+                  if (suppressClick.current) {
+                    suppressClick.current = false;
+                    return;
+                  }
+                  void next().catch(() => {});
+                }}
               />
             </div>
-            {particles && (
+            {particles && !reduceMotion && (
               <div className="spark-particles" aria-hidden="true">
                 {Array.from(
                   { length: settings.graphics === "LOW" ? 8 : 22 },
@@ -345,6 +478,26 @@ export function Opening({
             )}
           </div>
           <div className="opening-controls">
+            {flipped && card && (
+              <CardPrice cardId={card.id} finish={own.finish} />
+            )}
+            {flipped && spectacular && (
+              <span className="celebration-label">
+                ✦{" "}
+                {price && price.amount >= 50
+                  ? `BIG DISCOVERY · ${formatCardPrice(price)} REFERENCE`
+                  : own.tier >= 5
+                    ? "EXTRAORDINARY DISCOVERY"
+                    : own.finish !== "matte" && own.finish !== "gloss"
+                      ? "A LITTLE EXTRA SHIMMER"
+                      : "RARE DISCOVERY"}
+              </span>
+            )}
+            <span className="swipe-instruction">
+              {flipped
+                ? "← Swipe for next · Swipe right to showcase →"
+                : "Tap to reveal your card"}
+            </span>
             <span className="card-index">
               {opening.cursor + 1} / {cards.length} ·{" "}
               {flipped
@@ -354,10 +507,27 @@ export function Opening({
             <button
               className="primary"
               onClick={() => void next().catch(() => {})}
-              disabled={busy}
+              disabled={busy || artLoading || !deckReady}
             >
-              {flipped ? "NEXT CARD" : "REVEAL CARD"} <ArrowRight size={18} />
+              {artLoading
+                ? "LOADING ARTWORK…"
+                : flipped
+                  ? "NEXT CARD"
+                  : "REVEAL CARD"}{" "}
+              <ArrowRight size={18} />
             </button>
+            {flipped && (
+              <button
+                className="secondary showcase-card-action"
+                disabled={busy}
+                onClick={() => void addToShowcase()}
+              >
+                <Sparkles size={14} />{" "}
+                {save!.showcase.includes(own.instanceId)
+                  ? "IN SHOWCASE"
+                  : "ADD TO SHOWCASE"}
+              </button>
+            )}
             <button
               className="text-button"
               onClick={() =>
@@ -470,6 +640,12 @@ export function Opening({
             </button>
           </div>
         </>
+      )}
+      {gestureNotice && (
+        <div className="opening-toast" role="status">
+          <Check size={17} />
+          {gestureNotice}
+        </div>
       )}
       <div className="opening-flash" />
     </div>

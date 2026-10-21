@@ -86,6 +86,13 @@ export function useGame() {
           .filter((x): x is string => !!x),
       });
   }, [profile, save]);
+  useEffect(() => {
+    if (!profile || !save) return;
+    let host: string | undefined;
+    try { host = localStorage.getItem('packverse-host') || undefined; } catch {}
+    multiplayer.connect(host);
+    return () => multiplayer.disconnect();
+  }, [profile?.playerId, !!save]);
   return {
     profile,
     save,

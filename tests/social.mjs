@@ -73,7 +73,19 @@ const api = http.createServer(async (req, res) => {
     }
     return;
   }
-  if (path.startsWith("/api/v1/games/game2/data/social/")) {
+  if (path === "/api/v1/games/game2/data/social") {
+    send({
+      ok: true,
+      records: [...records.entries()]
+        .filter(([id]) => id.startsWith("pull"))
+        .map(([id, r]) => ({ id, ...r })),
+    });
+    return;
+  }
+  if (
+    path.startsWith("/api/v1/games/game2/data/social/") ||
+    path.startsWith("/api/v1/games/game2/data/trading/")
+  ) {
     const id = path.split("/").at(-1);
     if (req.method === "PUT") {
       assert(profile);
@@ -136,7 +148,7 @@ wss.on("connection", (ws, req) => {
   );
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());
-    assert(raw.length <= 2048);
+    assert(raw.length <= 20480);
     for (const [peer] of clients)
       if (peer !== ws) peer.send(JSON.stringify({ ...m, from: id }));
   });
@@ -158,6 +170,11 @@ async function player() {
   });
   const page = await context.newPage();
   page.on("pageerror", (e) => errors.push(e.message));
+  await context.route("https://**/*", (route) => route.abort());
+  await context.addInitScript(() => {
+    localStorage.setItem("packverse-host", "http://127.0.0.1:8789");
+    localStorage.setItem("packverse-intro-seen", "1");
+  });
   await page.goto("http://127.0.0.1:8080");
   await page.getByRole("button", { name: "Settings", exact: true }).waitFor();
   return { context, page };
@@ -167,11 +184,6 @@ async function join(p) {
     .getByRole("navigation")
     .getByRole("button", { name: "SOCIAL", exact: true })
     .click();
-  await p.getByRole("button", { name: "SERVER & ROOM" }).click();
-  await p
-    .getByRole("textbox", { name: "Multiplayer server" })
-    .fill("http://127.0.0.1:8789");
-  await p.getByRole("button", { name: "CONNECT TO GAME 2" }).click();
   await p.getByText("LIVE · LOBBY").waitFor();
 }
 try {
@@ -222,31 +234,70 @@ try {
   await b.page
     .getByRole("button", { name: "REMOVE SAVED COLLECTOR" })
     .waitFor();
-  await a.page.getByRole("button", { name: "LEAVE", exact: false }).click();
-  await b.page.getByText("1 collector here · Game 2").waitFor();
-  await a.page.getByRole("button", { name: "JOIN", exact: false }).click();
+  // Seed two independently persisted collections, then exchange through actual HTTP and WS.
+  async function seed(page, cardId, instanceId) {
+    await page.evaluate(
+      async ({ cardId, instanceId }) => {
+        const { transact } = await import("/src/services/persistence.ts");
+        const { cardById } = await import("/src/game/catalogue.ts");
+        const d = cardById.get(cardId);
+        await transact(localStorage.getItem("packverse-browser-id"), (s) => ({
+          ...s,
+          owned: [
+            {
+              instanceId,
+              cardId,
+              setId: d.setId,
+              finish: "holo",
+              tier: d.tier,
+              openingId: "fixture",
+              obtainedAt: 1,
+            },
+          ],
+        }));
+      },
+      { cardId, instanceId },
+    );
+    await page.reload();
+    await page.getByRole("button", { name: "Settings", exact: true }).waitFor();
+    await join(page);
+  }
+  await seed(a.page, "base1-4", "tradeA");
+  await seed(b.page, "neo1-9", "tradeB");
+  await a.page.getByRole("button", { name: "Trades", exact: true }).click();
+  await a.page.getByRole("button", { name: /OFFER TRADE/ }).click();
   await a.page
-    .getByText("2 collectors here · Game 2")
-    .waitFor({ timeout: 18000 });
-  await a.page.getByRole("button", { name: "Lounge", exact: true }).click();
-  assert.equal(
-    await a.page
-      .getByText("A real synchronized hello 🎴", { exact: true })
-      .count(),
-    1,
-  );
-  // Recovery preserves independent inventories when either player buys a local pack.
-  await a.page
-    .getByRole("navigation")
-    .getByRole("button", { name: "HOME", exact: true })
+    .getByRole("button", { name: "Offer Charizard tradeA", exact: true })
     .click();
-  await a.page.getByRole("button", { name: /OPEN ORIGIN BOOSTER/ }).click();
-  await a.page.getByRole("button", { name: /or tap to rip/ }).click();
-  await a.page.getByRole("button", { name: "Reveal all", exact: true }).click();
-  await a.page.getByRole("button", { name: /BACK TO THE UNIVERSE/ }).click();
-  assert.equal(await a.page.locator(".coin-balance").innerText(), "400");
-  assert.equal(await b.page.locator(".coin-balance").innerText(), "500");
-  // Emit using the same game client event pathway, and verify remote live pull UI.
+  await b.page.getByRole("button", { name: "Trades", exact: true }).click();
+  await b.page
+    .getByRole("button", { name: "Offer Lugia tradeB", exact: true })
+    .click();
+  await a.page.getByText("Lugia", { exact: true }).first().waitFor();
+  await a.page.getByRole("button", { name: "CONFIRM THESE CARDS" }).click();
+  await a.page.getByText(/Your confirmation is saved/).waitFor();
+  // Reload unconfirmed partner: prepared terms are recovered from the live peer.
+  await b.page.reload();
+  await join(b.page);
+  await b.page.getByRole("button", { name: "Trades", exact: true }).click();
+  await b.page
+    .getByRole("button", { name: "CONFIRM THESE CARDS" })
+    .waitFor({ timeout: 20000 });
+  await b.page.getByRole("button", { name: "CONFIRM THESE CARDS" }).click();
+  await a.page.getByText(/Trade complete/).waitFor({ timeout: 20000 });
+  await b.page.getByText(/Trade complete/).waitFor({ timeout: 20000 });
+  async function inventory(page) {
+    return page.evaluate(async () => {
+      const { loadSave } = await import("/src/services/persistence.ts");
+      return (await loadSave(localStorage.getItem("packverse-browser-id")))
+        .owned;
+    });
+  }
+  assert.equal((await inventory(a.page))[0].cardId, "neo1-9");
+  assert.equal((await inventory(b.page))[0].cardId, "base1-4");
+  await a.page.reload();
+  await join(a.page);
+  assert.equal((await inventory(a.page)).length, 1);
   await a.page.evaluate(async () => {
     const { multiplayer } = await import("/src/services/multiplayer.ts");
     multiplayer.send("pull", { id: "integration-pull", cardId: "base1-4" });
@@ -278,7 +329,8 @@ try {
           "profile persistence",
           "leaderboard submission",
           "friend save",
-          "disconnect/reconnect and chat history",
+          "automatic connection and reload recovery",
+          "mutually confirmed live card exchange and reload idempotency",
           "independent local inventories",
           "live remote rare pull",
         ],
